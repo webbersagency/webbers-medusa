@@ -1,7 +1,7 @@
 {
   "name": "@webbers/webbers-medusa",
   "displayName": "Medusa v2 Webbers QoL Plugin",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "Quality-of-life admin customizations for Medusa v2 (notes, customer anonymization, guest order transfer, price-list discount control, product reviews)",
   "author": "Webbers B.V. <development@webbers.com>",
   "license": "MIT",
