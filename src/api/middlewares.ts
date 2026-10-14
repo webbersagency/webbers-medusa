@@ -134,6 +134,10 @@ export default defineMiddlewares({
       middlewares: [featureGuard('reviews')],
     },
     {
+      matcher: '/admin/review-translations*',
+      middlewares: [featureGuard('reviews')],
+    },
+    {
       matcher: '/store/product-reviews*',
       middlewares: [featureGuard('reviews')],
     },

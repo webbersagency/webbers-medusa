@@ -18,5 +18,6 @@ export const ReviewModel = model.define('review', {
   type: model.enum(['store', 'product']).default('store'),
   response: model.hasOne(() => ReviewResponseModel, { nullable: true }).nullable(),
   status: model.enum(['pending', 'approved', 'flagged']).default('pending'),
+  translations: model.json().nullable(),
   metadata: model.json().nullable(),
 });

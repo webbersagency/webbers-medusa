@@ -4,6 +4,9 @@ import type { EntityManager } from '@medusajs/framework/mikro-orm/postgresql';
 import { ProductReviewStatsModel, ReviewImageModel, ReviewModel, ReviewResponseModel } from './models';
 import { ProductReviewStats } from './types';
 import { z } from '@medusajs/framework/zod';
+import { ReviewTranslation, TranslatableReview } from '../../review-translations';
+
+const GOOGLE_TRANSLATE_URL = 'https://translation.googleapis.com/language/translate/v2';
 
 interface CalculatedProductReviewStats {
   product_id: string;
@@ -20,6 +23,13 @@ export const moduleOptionsSchema = z
   .object({
     defaultReviewStatus: z.enum(['pending', 'approved', 'flagged']).default('approved'),
     enableReviewImages: z.boolean().default(true),
+    translations: z
+      .object({
+        apiKey: z.string().optional(),
+        sourceLanguage: z.string(),
+        targetLanguages: z.array(z.string()).min(1),
+      })
+      .optional(),
   })
   .default({
     defaultReviewStatus: 'approved',
@@ -27,6 +37,17 @@ export const moduleOptionsSchema = z
   });
 
 export type ModuleOptions = z.infer<typeof moduleOptionsSchema>;
+
+export type ReviewTranslationOptions = {
+  apiKey: string;
+  sourceLanguage: string;
+  targetLanguages: string[];
+};
+
+type GoogleTranslateResponse = {
+  data?: { translations: { translatedText: string }[] };
+  error?: { message: string };
+};
 
 class ReviewService extends MedusaService({
   Review: ReviewModel,
@@ -36,14 +57,69 @@ class ReviewService extends MedusaService({
 }) {
   public readonly defaultReviewStatus: string;
   public readonly enableReviewImages: boolean;
+  /** `null` unless the `translations` option is set with an `apiKey`. */
+  public readonly translationOptions: ReviewTranslationOptions | null;
 
   constructor(container, options: ModuleOptions) {
     super(container, options);
 
-    const { defaultReviewStatus, enableReviewImages } = moduleOptionsSchema.parse(options);
+    const { defaultReviewStatus, enableReviewImages, translations } = moduleOptionsSchema.parse(options);
 
     this.defaultReviewStatus = defaultReviewStatus;
     this.enableReviewImages = enableReviewImages;
+    this.translationOptions = translations?.apiKey ? { ...translations, apiKey: translations.apiKey } : null;
+  }
+
+  private async translateTexts(texts: string[], targetLanguage: string): Promise<string[]> {
+    if (!this.translationOptions) {
+      throw new Error('Review translations are not configured');
+    }
+    if (!texts.length) {
+      return [];
+    }
+
+    const response = await fetch(`${GOOGLE_TRANSLATE_URL}?key=${this.translationOptions.apiKey}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        q: texts,
+        source: this.translationOptions.sourceLanguage,
+        target: targetLanguage,
+        format: 'text',
+      }),
+    });
+    const { data, error } = (await response.json()) as GoogleTranslateResponse;
+
+    if (!response.ok || !data) {
+      throw new Error(`Google Translate request failed with status ${response.status}: ${error?.message ?? ''}`);
+    }
+
+    return data.translations.map(translation => translation.translatedText);
+  }
+
+  /** Translates the review's title and content into every configured target language, keyed by language. */
+  async translateReview(review: TranslatableReview): Promise<Record<string, ReviewTranslation>> {
+    const sourceTitle = review.title ?? null;
+    const sourceContent = review.content ?? null;
+    const textsToTranslate = [sourceTitle, sourceContent].filter((text): text is string => !!text?.trim());
+
+    const translateText = (text: string | null, translatedTexts: string[]) =>
+      text?.trim() ? (translatedTexts[textsToTranslate.indexOf(text)] ?? null) : text;
+
+    const translations = await Promise.all(
+      (this.translationOptions?.targetLanguages ?? []).map(async language => {
+        const translatedTexts = await this.translateTexts(textsToTranslate, language);
+        const translation: ReviewTranslation = {
+          title: translateText(sourceTitle, translatedTexts),
+          content: translateText(sourceContent, translatedTexts),
+          source_title: sourceTitle,
+          source_content: sourceContent,
+        };
+        return [language, translation] as const;
+      })
+    );
+
+    return Object.fromEntries(translations);
   }
 
   async refreshProductReviewStats(productIds: string[], sharedContext?: Context): Promise<ProductReviewStats[]> {
