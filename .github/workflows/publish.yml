@@ -1,0 +1,41 @@
+name: Publish to npm
+
+# Runs when a GitHub Release is published. Authenticates to npm via Trusted Publishing (OIDC),
+# so no NPM_TOKEN secret is needed — see https://docs.npmjs.com/trusted-publishers
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v5
+        with:
+          # Trusted Publishing needs npm >= 11.5.1, which ships with Node 24
+          node-version: 24
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+
+      - name: Check release tag matches package.json version
+        run: |
+          VERSION="$(node -p 'require("./package.json").version')"
+          if [ "${GITHUB_REF_NAME#v}" != "$VERSION" ]; then
+            echo "::error::Release tag $GITHUB_REF_NAME does not match package.json version $VERSION"
+            exit 1
+          fi
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm test
+
+      # prepublishOnly runs `medusa plugin:build`; pre-releases go to the `next` dist-tag
+      - run: npm publish ${{ github.event.release.prerelease && '--tag next' || '' }}
