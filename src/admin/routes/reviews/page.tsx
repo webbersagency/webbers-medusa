@@ -43,6 +43,7 @@ export type Review = {
   products: AdminProduct[];
   images?: { id: string; url: string }[];
   has_images: boolean;
+  translations?: Record<string, unknown> | null;
 };
 
 export type ListReviewsResponse = {

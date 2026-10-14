@@ -20,6 +20,12 @@ export type UpdateReviewsWorkflowInput = {
   remove_product_ids?: string[];
 };
 
+export type TranslateReviewsWorkflowInput = {
+  ids: string[];
+  /** Skip reviews whose translations already match their current title and content. */
+  only_outdated?: boolean;
+};
+
 export type DeleteReviewResponsesWorkflowInput = {
   ids: string[];
 };

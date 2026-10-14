@@ -147,6 +147,12 @@ plugins: [
       // Whether reviews use photos: the Kiyoh sync copies review photos to the file provider, and the store
       // API returns them. Set to false to leave photos out everywhere. Default: true
       enableReviewImages: true,
+      // Optional machine translation of review titles and content (Google Translate). Off unless apiKey is set.
+      translations: {
+        apiKey: process.env.GOOGLE_TRANSLATE_API_KEY,
+        sourceLanguage: 'nl',
+        targetLanguages: ['en'],
+      },
       // ...anonymize / editEmail options...
     },
   },
@@ -166,6 +172,14 @@ through `createReviewsWorkflow`. With `enableReviewImages` on (the default), it 
 customer photo from Kiyoh to the host app's file provider and attaches it as a review image. The workflows are exported (`createReviewsWorkflow`,
 `updateReviewsWorkflow`, `refreshProductReviewStatsWorkflow`, …) for host scripts, e.g. bulk imports
 or stats regeneration.
+
+With `translations` configured, the admin review detail page gets a **Translations** section with a
+**Translate** button (`POST /admin/reviews/:id/translate`), showing per language whether the translation
+is missing, up to date or outdated (the review was edited after translating). Translations are stored in the
+review's `translations` column, keyed by language, as `{ title, content, source_title, source_content }`; nothing is
+translated automatically. Host apps decide what to translate with `translateReviewsWorkflow`
+(`{ ids, only_outdated }`) and read translations with the helpers in
+`@webbers/webbers-medusa/review-translations`.
 
 The `reviews` feature flag gates all review endpoints (admin + store) and the admin Reviews page
 content (the sidebar entry itself cannot be hidden dynamically; the page shows a notice when the

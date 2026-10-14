@@ -6,6 +6,7 @@ export * from './price-list-ext/create-price-list-ext';
 export * from './price-list-ext/update-price-list-ext';
 export * from './review/create-reviews';
 export * from './review/update-reviews';
+export * from './review/translate-reviews';
 export * from './review/delete-review';
 export * from './review/create-review-responses';
 export * from './review/update-review-responses';
