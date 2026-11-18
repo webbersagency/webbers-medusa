@@ -22,6 +22,7 @@ import { storeProductReviewStatRoutesMiddlewares } from './store/product-review-
 import { PostEditEmail } from './admin/customers/[id]/edit-email/validators';
 import { PostWebbersSettings } from './admin/webbers-medusa/settings/validators';
 import { PatchAdminUpdatePriceListExt } from './admin/price-lists/[id]/ext/validators';
+import { PostAdminGenerateCouponCodes } from './admin/campaigns/[id]/coupon-codes/validators';
 import { WEBBERS_SETTINGS_MODULE } from '../modules/webbers-settings';
 import WebbersSettingsService from '../modules/webbers-settings/service';
 import { WebbersFeatureKey } from '../feature-flags';
@@ -115,6 +116,22 @@ export default defineMiddlewares({
       additionalDataValidator: {
         always_free: z.boolean().nullish(),
       } as ZodRawShape,
+    },
+    // --- Unique coupon codes ---
+    {
+      matcher: '/admin/campaigns/:id/coupon-codes',
+      methods: ['GET'] as MiddlewareVerb[],
+      middlewares: [featureGuard('uniqueCouponCodes')],
+    },
+    {
+      matcher: '/admin/campaigns/:id/coupon-codes',
+      methods: ['POST'] as MiddlewareVerb[],
+      middlewares: [featureGuard('uniqueCouponCodes'), validateAndTransformBody(PostAdminGenerateCouponCodes)],
+    },
+    {
+      matcher: '/admin/campaigns/:id/coupon-codes/:batch_id',
+      methods: ['GET'] as MiddlewareVerb[],
+      middlewares: [featureGuard('uniqueCouponCodes')],
     },
     // --- Settings page API ---
     {

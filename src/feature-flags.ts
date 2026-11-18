@@ -11,6 +11,7 @@ export type WebbersFeatureKey =
   | 'orderNotifications'
   | 'alwaysFreePromotion'
   | 'disallowPriceListDiscounts'
+  | 'uniqueCouponCodes'
   | 'reviews';
 
 export type WebbersFeatureDefinition = {
@@ -59,6 +60,11 @@ export const WEBBERS_FEATURES: WebbersFeatureDefinition[] = [
     key: 'disallowPriceListDiscounts',
     label: 'Disallow price-list discounts',
     description: "Toggle on a price list to stop discount codes from overriding its prices.",
+  },
+  {
+    key: 'uniqueCouponCodes',
+    label: 'Unique coupon codes',
+    description: 'Generate single-use codes from a template promotion on the campaign page, with a CSV download.',
   },
   {
     key: 'reviews',

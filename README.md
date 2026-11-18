@@ -12,6 +12,7 @@ Quality-of-life admin customizations for Medusa v2, extracted from the Frecious 
 - **Order notifications** — sidebar widget listing the transactional emails sent for an order.
 - **Always-free promotion** — flag a promotion as "always free shipping". Ships the data model, workflows, link and admin widget; the host app wires the trigger (see below).
 - **Disallow price-list discounts** — a toggle on the price-list detail page that stops discount/promotion codes from overriding that price list. Ships the data model, link, workflows, admin API + widget, and a store add-to-cart endpoint that enforces it; the storefront wires the endpoint (see below).
+- **Unique coupon codes** — a widget on the campaign detail page that generates single-use promotion codes (`PREFIX-XXXXXXXX`, or `XXXX-XXXX-XXXX` without a prefix) from a template promotion in that campaign, and downloads them as a CSV (one code per line, e.g. for Klaviyo's coupon upload). See "Unique coupon codes".
 - **Product reviews** — full product-review stack: `review` module (reviews, responses, images, per-product stats), admin **Reviews** page (list + detail, approve/reject/flag, responses, link products), admin/store APIs (`/admin/reviews`, `/admin/product-review-stats`, `/store/product-reviews` incl. image uploads, `/store/product-review-stats`) and an optional daily Kiyoh sync job. See "Product reviews".
 
 ## Toggling features
@@ -50,7 +51,8 @@ npx medusa db:migrate
 | Always-free (`promotion_addition`) module + migration | `src/modules/promotion-addition` |
 | Price-list-ext (`price_list_ext`) module + migration | `src/modules/price-list-ext` |
 | Links (customer/order note, promotion always-free, price-list-ext) | `src/links` |
-| Workflows (note, always-free, price-list-ext) | `src/workflows` |
+| Workflows (note, always-free, price-list-ext, coupon codes) | `src/workflows` |
+| Unique coupon codes (code generator, admin API) | `src/utils/coupon-codes.ts`, `src/api/admin/campaigns/[id]/coupon-codes` |
 | Admin widgets | `src/admin/widgets` |
 | Admin API routes | `src/api/admin` |
 | Store API route (price-list-aware add-to-cart) | `src/api/store/carts/[id]/line-item-price-list` |
@@ -184,6 +186,36 @@ translated automatically. Host apps decide what to translate with `translateRevi
 The `reviews` feature flag gates all review endpoints (admin + store) and the admin Reviews page
 content (the sidebar entry itself cannot be hidden dynamically; the page shows a notice when the
 feature is off).
+
+## Unique coupon codes
+
+On a campaign detail page the **Unique coupon codes** widget generates a batch of single-use codes:
+
+1. Add one promotion with a code to the campaign. It is the template: its discount, rules and
+   conditions are copied to every generated code. Keep it in **draft**, so nobody can redeem the
+   template code itself (generated codes are always created as active).
+2. In the widget pick the template, an optional prefix (2–12 letters/digits) and a quantity
+   (max 2000 per batch), then generate. Codes look like `PREFIX-K7M2X9QP`, or `K7M2-X9QP-4HTB`
+   without a prefix, from an alphabet without `0/O` and `1/I`.
+3. The CSV downloads right away (one code per line, no header row). Every batch is listed with its
+   used/unused counts and can be downloaded again.
+
+Each code is a regular promotion in the campaign with `limit: 1`, so this needs a Medusa version
+with promotion usage limits. A batch is tracked through promotion `metadata` (`coupon_batch_id`,
+`coupon_batch_created_at`, `coupon_batch_template_id`, `coupon_batch_prefix`); no extra table or
+migration.
+
+The promotions are created with the core `createPromotionsStep`, not `createPromotionsWorkflow`, so
+the host's `promotionsCreated` hook handler does **not** run for generated codes (it would run once
+per code). Links such as always-free are therefore not copied from the template.
+
+Endpoints (guarded by the `uniqueCouponCodes` feature flag):
+
+- `GET /admin/campaigns/:id/coupon-codes` — template candidates and batches
+- `POST /admin/campaigns/:id/coupon-codes` — `{ template_promotion_id, quantity, prefix? }` → `{ batch_id, codes }`
+- `GET /admin/campaigns/:id/coupon-codes/:batch_id` — the codes of one batch
+
+The workflow is exported as `generateCampaignCouponCodesWorkflow` from `@webbers/webbers-medusa/workflows`.
 
 ## Attaching notes to your own entities
 

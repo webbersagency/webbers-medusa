@@ -4,6 +4,7 @@ export * from './promotion-addition/create-always-free-from-promotion';
 export * from './promotion-addition/update-always-free-from-promotion';
 export * from './price-list-ext/create-price-list-ext';
 export * from './price-list-ext/update-price-list-ext';
+export * from './coupon-codes/generate-campaign-coupon-codes';
 export * from './review/create-reviews';
 export * from './review/update-reviews';
 export * from './review/translate-reviews';
