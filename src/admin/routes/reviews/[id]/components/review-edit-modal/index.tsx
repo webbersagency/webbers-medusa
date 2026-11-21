@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { ReviewEditModalProps } from './types.ts';
 import { Button, Drawer, toast } from '@medusajs/ui';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -12,6 +13,7 @@ import {
 } from '../../../components/review-form';
 
 const ReviewEditModal = ({ state, close, review }: ReviewEditModalProps) => {
+  const { t } = useTranslation('webbersMedusa');
   const queryClient = useQueryClient();
   const methods = useForm<ReviewFormValues>({
     defaultValues: {
@@ -39,12 +41,12 @@ const ReviewEditModal = ({ state, close, review }: ReviewEditModalProps) => {
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['review', id] });
       await queryClient.invalidateQueries({ queryKey: ['reviews'] });
-      toast.success('Review updated successfully');
+      toast.success(t('reviews.editSuccess'));
       close();
     },
     onError: err => {
       console.error(err);
-      toast.error('Failed to update review');
+      toast.error(t('reviews.editError'));
     },
   });
 
@@ -57,7 +59,7 @@ const ReviewEditModal = ({ state, close, review }: ReviewEditModalProps) => {
       <Drawer open={state} onOpenChange={close}>
         <Drawer.Content>
           <Drawer.Header>
-            <h1 className="font-sans font-medium h1-core">Edit Review</h1>
+            <h1 className="font-sans font-medium h1-core">{t('reviews.editTitle')}</h1>
           </Drawer.Header>
 
           <Drawer.Body className="overflow-y-auto">
@@ -66,10 +68,10 @@ const ReviewEditModal = ({ state, close, review }: ReviewEditModalProps) => {
 
           <Drawer.Footer>
             <Button variant="secondary" type="submit" onClick={close} size={'small'}>
-              Cancel
+              {t('common.cancel')}
             </Button>
             <Button variant="primary" type="submit" onClick={methods.handleSubmit(onSubmit)} size={'small'}>
-              Save
+              {t('common.save')}
             </Button>
           </Drawer.Footer>
         </Drawer.Content>

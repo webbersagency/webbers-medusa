@@ -1,0 +1,275 @@
+{
+  "common": {
+    "cancel": "Anuluj",
+    "confirm": "Potwierdź",
+    "confirmTitle": "Czy na pewno?",
+    "create": "Utwórz",
+    "date": "Data",
+    "delete": "Usuń",
+    "edit": "Edytuj",
+    "filter": "Filtruj",
+    "loading": "Wczytywanie…",
+    "no": "Nie",
+    "noRecords": "Brak wyników",
+    "noRecordsDescription": "Nie ma wyników do wyświetlenia.",
+    "optional": "Opcjonalne",
+    "remove": "Usuń",
+    "save": "Zapisz",
+    "saving": "Zapisywanie…",
+    "search": "Szukaj",
+    "selectAll": "Zaznacz wszystkie wiersze na tej stronie",
+    "selectItem": "Zaznacz: {{name}}",
+    "selected_one": "Zaznaczono {{count, number}} pozycję",
+    "selected_few": "Zaznaczono {{count, number}} pozycje",
+    "selected_many": "Zaznaczono {{count, number}} pozycji",
+    "selected_other": "Zaznaczono {{count, number}} pozycji",
+    "sort": "Sortuj",
+    "sortAscending": "A–Z",
+    "sortDescending": "Z–A",
+    "status": "Status",
+    "yes": "Tak",
+    "pagination": {
+      "of": "z",
+      "results": "wyników",
+      "pages": "stron",
+      "previous": "Poprzednia",
+      "next": "Następna"
+    }
+  },
+  "coupons": {
+    "title": "Unikalne kody rabatowe",
+    "subtitle": "Generuj jednorazowe kody z promocji w tej kampanii, na przykład na potrzeby automatyzacji w Klaviyo.",
+    "noTemplates": "Najpierw dodaj do tej kampanii promocję z kodem. Posłuży jako szablon rabatu i jego warunków. Pozostaw ją jako wersję roboczą, aby nikt nie mógł użyć kodu z szablonu.",
+    "template": "Promocja szablonowa",
+    "templatePlaceholder": "Wybierz promocję",
+    "quantity": "Liczba kodów (maksymalnie {{max, number}} na raz)",
+    "prefix": "Prefiks (opcjonalny)",
+    "prefixHint": "Wpisz od 2 do 12 liter lub cyfr albo pozostaw pole puste. Przykładowy kod: {{example}}.",
+    "submit": "Wygeneruj kody",
+    "draft": "wersja robocza",
+    "createdAt": "Utworzono",
+    "batchPrefix": "Prefiks",
+    "total": "Kody",
+    "used": "Wykorzystane",
+    "remaining": "Niewykorzystane",
+    "download": "Pobierz CSV",
+    "empty": "Nie wygenerowano jeszcze kodów dla tej kampanii.",
+    "generated_one": "Utworzono {{count, number}} kod. Plik CSV został pobrany. Prześlij go do kuponu w Klaviyo.",
+    "generated_few": "Utworzono {{count, number}} kody. Plik CSV został pobrany. Prześlij go do kuponu w Klaviyo.",
+    "generated_many": "Utworzono {{count, number}} kodów. Plik CSV został pobrany. Prześlij go do kuponu w Klaviyo.",
+    "generated_other": "Utworzono {{count, number}} kodu. Plik CSV został pobrany. Prześlij go do kuponu w Klaviyo.",
+    "error": "Nie udało się utworzyć kodów",
+    "downloadError": "Nie udało się pobrać pliku CSV"
+  },
+  "customer": {
+    "anonymize": {
+      "title": "RODO",
+      "description": "Trwale usuwa wszystkie dane osobowe tego klienta w ramach wniosku RODO. Tej operacji nie można cofnąć.",
+      "confirmTitle": "Zanonimizować klienta?",
+      "confirmDescription": "Spowoduje to trwałe usunięcie imienia i nazwiska, adresu, numeru telefonu, adresu e-mail oraz danych płatniczych klienta ze wszystkich zamówień, koszyków i subskrypcji. Tej operacji nie można cofnąć.",
+      "action": "Anonimizuj",
+      "pending": "Anonimizowanie…",
+      "success": "Zanonimizowano klienta",
+      "error": "Nie udało się zanonimizować klienta"
+    },
+    "email": {
+      "title": "Adres e-mail klienta",
+      "save": "Zapisz adres e-mail",
+      "success": "Zaktualizowano adres e-mail",
+      "error": "Nie udało się zaktualizować adresu e-mail"
+    },
+    "guestOrders": {
+      "title": "Zamówienia gości",
+      "description_one": "Znaleziono {{count, number}} nieprzypisane zamówienie gościa dla adresu {{email}}. Przypisz je do tego konta klienta.",
+      "description_few": "Znaleziono {{count, number}} nieprzypisane zamówienia gości dla adresu {{email}}. Przypisz je do tego konta klienta.",
+      "description_many": "Znaleziono {{count, number}} nieprzypisanych zamówień gości dla adresu {{email}}. Przypisz je do tego konta klienta.",
+      "description_other": "Znaleziono {{count, number}} nieprzypisanych zamówień gości dla adresu {{email}}. Przypisz je do tego konta klienta.",
+      "merge": "Przypisz zamówienia gości",
+      "success_one": "Przypisano {{count, number}} zamówienie gościa do tego klienta",
+      "success_few": "Przypisano {{count, number}} zamówienia gości do tego klienta",
+      "success_many": "Przypisano {{count, number}} zamówień gości do tego klienta",
+      "success_other": "Przypisano {{count, number}} zamówień gości do tego klienta",
+      "error": "Nie udało się przypisać zamówień gości"
+    }
+  },
+  "metadata": {
+    "title": "Metadane",
+    "keyCount_one": "{{count, number}} klucz",
+    "keyCount_few": "{{count, number}} klucze",
+    "keyCount_many": "{{count, number}} kluczy",
+    "keyCount_other": "{{count, number}} klucza",
+    "edit": "Edytuj metadane",
+    "key": "Klucz",
+    "value": "Wartość",
+    "rowDisabled": "Nie można edytować tego wiersza, ponieważ zawiera dane złożone.",
+    "insertAbove": "Wstaw wiersz powyżej",
+    "insertBelow": "Wstaw wiersz poniżej",
+    "deleteRow": "Usuń wiersz",
+    "success": "Zaktualizowano metadane",
+    "error": "Nie udało się zaktualizować metadanych"
+  },
+  "notes": {
+    "customer": "Notatka o kliencie",
+    "order": "Notatka do zamówienia",
+    "entity": "Notatka ({{entity}})",
+    "save": "Zapisz notatkę",
+    "success": "Zaktualizowano notatkę"
+  },
+  "orders": {
+    "discounts": {
+      "title": "Zestawienie rabatów"
+    },
+    "notifications": {
+      "title": "Powiadomienia",
+      "empty": "Nie wysłano powiadomień",
+      "invoice": "E-mail z fakturą"
+    }
+  },
+  "priceList": {
+    "title": "Blokuj rabaty",
+    "description": "Po włączeniu tej opcji rabaty nie mogą zmienić cen z tego cennika."
+  },
+  "products": {
+    "product": "Produkt",
+    "title": "Produkty",
+    "variants": "Warianty",
+    "variantCount_one": "{{count, number}} wariant",
+    "variantCount_few": "{{count, number}} warianty",
+    "variantCount_many": "{{count, number}} wariantów",
+    "variantCount_other": "{{count, number}} wariantu",
+    "status": {
+      "draft": "Wersja robocza",
+      "proposed": "Zaproponowany",
+      "published": "Opublikowany",
+      "rejected": "Odrzucony"
+    }
+  },
+  "promotion": {
+    "title": "Darmowa dostawa",
+    "confirmTitle": "Zmienić ustawienie darmowej dostawy?",
+    "confirmDescription": "Czy na pewno chcesz zmienić ustawienie darmowej dostawy?"
+  },
+  "reviews": {
+    "title": "Opinie",
+    "singular": "Opinia",
+    "copyId": "Skopiuj identyfikator opinii",
+    "disabled": "Funkcja opinii jest wyłączona. Włącz ją w sekcji Ustawienia → Webbers QoL.",
+    "photo": "Zdjęcie",
+    "photos": "Zdjęcia",
+    "noPhotos": "Ta opinia nie zawiera zdjęć.",
+    "noPhotosFirst": "Najpierw bez zdjęć",
+    "photosFirst": "Najpierw ze zdjęciami",
+    "approve": "Zatwierdź",
+    "flag": "Oflaguj",
+    "status": {
+      "approved": "Zatwierdzona",
+      "pending": "Oczekująca",
+      "flagged": "Oflagowana"
+    },
+    "statusSuccess": "Zaktualizowano status opinii",
+    "statusError": "Nie udało się zaktualizować statusu opinii",
+    "createTitle": "Utwórz opinię",
+    "createSuccess": "Utworzono opinię",
+    "createError": "Nie udało się utworzyć opinii",
+    "editTitle": "Edytuj opinię",
+    "editSuccess": "Zaktualizowano opinię",
+    "editError": "Nie udało się zaktualizować opinii",
+    "deleteConfirm": "Spowoduje to trwałe usunięcie opinii. Tej operacji nie można cofnąć.",
+    "deleteSuccess": "Usunięto opinię",
+    "deleteError": "Nie udało się usunąć opinii",
+    "fields": {
+      "name": "Imię i nazwisko",
+      "title": "Tytuł",
+      "rating": "Ocena",
+      "city": "Miejscowość",
+      "cityOptional": "Miejscowość (opcjonalnie)",
+      "age": "Wiek",
+      "ageOptional": "Wiek (opcjonalnie)",
+      "gender": "Płeć",
+      "genderOptional": "Płeć (opcjonalnie)",
+      "content": "Treść",
+      "recommend": "Polecam ten produkt",
+      "recommended": "Poleca produkt",
+      "email": "Adres e-mail"
+    },
+    "options": {
+      "notApplicable": "Nie dotyczy",
+      "male": "Mężczyzna",
+      "female": "Kobieta",
+      "other": "Inna / X",
+      "undisclosed": "Wolę nie podawać"
+    },
+    "products": {
+      "add": "Dodaj produkty",
+      "addSuccess": "Dodano produkty do opinii",
+      "addError": "Nie udało się dodać produktów do opinii",
+      "removeConfirm": "Spowoduje to usunięcie produktu „{{title}}” z opinii. Tej operacji nie można cofnąć.",
+      "removeBatchConfirm_one": "Spowoduje to usunięcie {{count, number}} produktu z opinii. Tej operacji nie można cofnąć.",
+      "removeBatchConfirm_few": "Spowoduje to usunięcie {{count, number}} produktów z opinii. Tej operacji nie można cofnąć.",
+      "removeBatchConfirm_many": "Spowoduje to usunięcie {{count, number}} produktów z opinii. Tej operacji nie można cofnąć.",
+      "removeBatchConfirm_other": "Spowoduje to usunięcie {{count, number}} produktu z opinii. Tej operacji nie można cofnąć.",
+      "removeSuccess": "Usunięto produkty z opinii"
+    },
+    "translations": {
+      "title": "Tłumaczenia",
+      "action": "Przetłumacz",
+      "status": "Status ({{language}})",
+      "titleLabel": "Tytuł ({{language}})",
+      "content": "Treść ({{language}})",
+      "missing": "Brak tłumaczenia",
+      "current": "Aktualne",
+      "outdated": "Nieaktualne",
+      "success": "Przetłumaczono opinię",
+      "error": "Nie udało się przetłumaczyć opinii"
+    }
+  },
+  "settings": {
+    "nav": "Webbers QoL",
+    "title": "Funkcje Webbers QoL",
+    "description": "Włączaj i wyłączaj funkcje udostępniane przez tę wtyczkę. Wyłączenie funkcji ukrywa jej widżet w panelu administracyjnym i blokuje powiązane punkty końcowe API.",
+    "success": "Zapisano ustawienia",
+    "error": "Nie udało się zapisać ustawień",
+    "features": {
+      "notes": {
+        "label": "Notatki",
+        "description": "Notatki tekstowe na stronach szczegółów klientów i zamówień."
+      },
+      "anonymizeCustomer": {
+        "label": "Anonimizuj klienta",
+        "description": "Usuwanie danych osobowych zgodnie z RODO na stronie klienta (tylko dla superadministratorów)."
+      },
+      "transferGuestOrders": {
+        "label": "Przenieś zamówienia gości",
+        "description": "Przypisywanie niepowiązanych zamówień gości do konta klienta."
+      },
+      "editCustomerEmail": {
+        "label": "Edytuj adres e-mail klienta",
+        "description": "Zmiana adresu e-mail zarejestrowanego klienta na jego stronie."
+      },
+      "orderDiscountBreakdown": {
+        "label": "Zestawienie rabatów w zamówieniu",
+        "description": "Zestawienie kodów rabatowych zastosowanych w zamówieniu."
+      },
+      "orderNotifications": {
+        "label": "Powiadomienia o zamówieniu",
+        "description": "Lista e-maili transakcyjnych wysłanych w związku z zamówieniem."
+      },
+      "alwaysFreePromotion": {
+        "label": "Promocja z zawsze darmową dostawą",
+        "description": "Przełącznik darmowej dostawy na stronie promocji (tylko widżet)."
+      },
+      "disallowPriceListDiscounts": {
+        "label": "Blokuj rabaty w cenniku",
+        "description": "Przełącznik cennika, który blokuje zmianę cen przez kody rabatowe."
+      },
+      "uniqueCouponCodes": {
+        "label": "Unikalne kody rabatowe",
+        "description": "Generowanie jednorazowych kodów z promocji szablonowej na stronie kampanii, z możliwością pobrania pliku CSV."
+      },
+      "reviews": {
+        "label": "Opinie o produktach",
+        "description": "Opinie o produktach w panelu administracyjnym, API sklepu i statystykach opinii."
+      }
+    }
+  }
+}

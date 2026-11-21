@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { clx } from '@medusajs/ui';
 import { PropsWithChildren } from 'react';
 
@@ -5,15 +6,14 @@ type StatusCellProps = PropsWithChildren<{
   color?: 'green' | 'red' | 'blue' | 'orange' | 'grey' | 'purple';
 }>;
 
-export const getReviewstatus = (status: string) => {
-  const [label, color] = {
-    approved: ['Approved', 'green'],
-    pending: ['Pending', 'orange'],
-    flagged: ['Flagged', 'red'],
-  }[status] as [string, 'red' | 'orange' | 'green'];
+const reviewStatuses = {
+  approved: { label: 'reviews.status.approved', color: 'green' },
+  pending: { label: 'reviews.status.pending', color: 'orange' },
+  flagged: { label: 'reviews.status.flagged', color: 'red' },
+} as const;
 
-  return { label, color };
-};
+export const getReviewStatus = (status: string) =>
+  reviewStatuses[status as keyof typeof reviewStatuses];
 
 export const StatusCell = ({ color, children }: StatusCellProps) => {
   return (
@@ -33,11 +33,14 @@ export const StatusCell = ({ color, children }: StatusCellProps) => {
 };
 
 export const ReviewStatusCell = ({ status }: { status: string }) => {
-  if (!status) {
+  const { t } = useTranslation('webbersMedusa');
+  const reviewStatus = getReviewStatus(status);
+
+  if (!reviewStatus) {
     return <span>-</span>;
   }
 
-  const { label, color } = getReviewstatus(status);
+  const { label, color } = reviewStatus;
 
-  return <StatusCell color={color}>{label}</StatusCell>;
+  return <StatusCell color={color}>{t(label)}</StatusCell>;
 };

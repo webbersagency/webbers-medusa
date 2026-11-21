@@ -1,7 +1,9 @@
+import { useTranslation } from 'react-i18next';
 import { defineWidgetConfig } from '@medusajs/admin-sdk';
 import { AdminOrder, DetailWidgetProps } from '@medusajs/types';
 import { Container, Heading, Text } from '@medusajs/ui';
 import { useQuery } from '@tanstack/react-query';
+import { getAdminLocale } from '../lib/admin-locale';
 import { sdk } from '../lib/sdk.ts';
 import { useFeatureEnabled } from '../lib/use-feature-flags';
 
@@ -42,14 +44,17 @@ const buildDiscountCodeBreakdown = (
     .sort((a, b) => b.total - a.total);
 };
 
-const formatAmount = (amount: number, currencyCode: string) =>
-  new Intl.NumberFormat([], {
+const formatAmount = (amount: number, currencyCode: string, locale: string) =>
+  new Intl.NumberFormat(locale, {
     style: 'currency',
     currencyDisplay: 'narrowSymbol',
     currency: currencyCode,
   }).format(amount);
 
 const OrderDiscountBreakdownWidget = ({ data: order }: DetailWidgetProps<AdminOrder>) => {
+  const { t, i18n } = useTranslation('webbersMedusa');
+  const locale = getAdminLocale(i18n.language);
+  const percentageFormat = new Intl.NumberFormat(locale, { style: 'percent', maximumFractionDigits: 10 });
   const enabled = useFeatureEnabled('orderDiscountBreakdown');
 
   const { data, isLoading } = useQuery({
@@ -77,23 +82,25 @@ const OrderDiscountBreakdownWidget = ({ data: order }: DetailWidgetProps<AdminOr
   return (
     <Container className="divide-y divide-dashed p-0">
       <div className="flex items-center justify-between px-6 py-4">
-        <Heading level="h2">Discount breakdown</Heading>
+        <Heading level="h2">{t('orders.discounts.title')}</Heading>
       </div>
 
       <div className="text-ui-fg-subtle flex flex-col gap-y-2 px-6 py-4">
         {isLoading ? (
-          <Text size="small">Loading…</Text>
+          <Text size="small">{t('common.loading')}</Text>
         ) : (
           breakdown.map(({ code, total, percentage }) => (
             <div key={code} className="flex items-center justify-between gap-x-2">
               <div className="flex gap-1">
                 <span className="txt-small">{code}</span>
-                {typeof percentage === 'number' && <span className="txt-small">({percentage}%)</span>}
+                {typeof percentage === 'number' && (
+                  <span className="txt-small">({percentageFormat.format(percentage / 100)})</span>
+                )}
               </div>
               <div className="relative flex-1">
                 <div className="bottom-[calc(50% - 2px)] absolute h-[1px] w-full border-b border-dashed" />
               </div>
-              <span className="txt-small text-ui-fg-muted">{formatAmount(total, order.currency_code)}</span>
+              <span className="txt-small text-ui-fg-muted">{formatAmount(total, order.currency_code, locale)}</span>
             </div>
           ))
         )}

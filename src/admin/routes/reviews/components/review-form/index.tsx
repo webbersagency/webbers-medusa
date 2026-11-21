@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Input, Select, Textarea } from '@medusajs/ui';
 import { z } from '@medusajs/framework/zod';
 import { SVGProps } from 'react';
@@ -11,7 +12,7 @@ export const StarIcon = (props: SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-export const ageOptions = [
+const ageRanges = [
   { label: '18 - 30', value: '18-30' },
   { label: '30 - 40', value: '30-40' },
   { label: '40 - 50', value: '40-50' },
@@ -19,20 +20,25 @@ export const ageOptions = [
   { label: '60 - 70', value: '60-70' },
   { label: '70 - 80', value: '70-80' },
   { label: '80 - 90', value: '80-90' },
-  { label: 'N.V.T.', value: 'nvt' },
 ];
 
-export const genderOptions = [
-  { label: 'Male', value: 'M' },
-  { label: 'Female', value: 'V' },
-  { label: 'Other / X', value: 'X' },
-  { label: 'Prefer not to say', value: 'nvt' },
-];
+export const useReviewOptions = () => {
+  const { t } = useTranslation('webbersMedusa');
 
-export const recommendOptions = [
-  { label: 'Yes', value: 'yes' },
-  { label: 'No', value: 'no' },
-];
+  return {
+    ageOptions: [...ageRanges, { label: t('reviews.options.notApplicable'), value: 'nvt' }],
+    genderOptions: [
+      { label: t('reviews.options.male'), value: 'M' },
+      { label: t('reviews.options.female'), value: 'V' },
+      { label: t('reviews.options.other'), value: 'X' },
+      { label: t('reviews.options.undisclosed'), value: 'nvt' },
+    ],
+    recommendOptions: [
+      { label: t('common.yes'), value: 'yes' },
+      { label: t('common.no'), value: 'no' },
+    ],
+  };
+};
 
 export const reviewFormSchema = z.object({
   name: z.string(),
@@ -79,6 +85,8 @@ export const toReviewPayload = (values: ReviewFormValues): ReviewPayload => ({
  * flows can render an identical form.
  */
 export const ReviewFormFields = () => {
+  const { t } = useTranslation('webbersMedusa');
+  const { ageOptions, genderOptions, recommendOptions } = useReviewOptions();
   const { control } = useFormContext<ReviewFormValues>();
 
   return (
@@ -88,7 +96,7 @@ export const ReviewFormFields = () => {
         name="rating"
         render={({ field }) => (
           <Form.Item>
-            <Form.Label>Rating</Form.Label>
+            <Form.Label>{t('reviews.fields.rating')}</Form.Label>
             <Form.Control>
               <div>
                 <Rating
@@ -116,7 +124,7 @@ export const ReviewFormFields = () => {
         name="name"
         render={({ field }) => (
           <Form.Item>
-            <Form.Label>Name</Form.Label>
+            <Form.Label>{t('reviews.fields.name')}</Form.Label>
             <Form.Control>
               <Input type="text" {...field} />
             </Form.Control>
@@ -129,7 +137,7 @@ export const ReviewFormFields = () => {
         name="city"
         render={({ field }) => (
           <Form.Item>
-            <Form.Label>City (optional)</Form.Label>
+            <Form.Label>{t('reviews.fields.cityOptional')}</Form.Label>
             <Form.Control>
               <Input type="text" {...field} />
             </Form.Control>
@@ -142,7 +150,7 @@ export const ReviewFormFields = () => {
         name="age"
         render={({ field }) => (
           <Form.Item>
-            <Form.Label>Age (optional)</Form.Label>
+            <Form.Label>{t('reviews.fields.ageOptional')}</Form.Label>
             <Form.Control>
               <Select {...field} onValueChange={field.onChange}>
                 <Select.Trigger>
@@ -166,7 +174,7 @@ export const ReviewFormFields = () => {
         name="gender"
         render={({ field }) => (
           <Form.Item>
-            <Form.Label>Gender (optional)</Form.Label>
+            <Form.Label>{t('reviews.fields.genderOptional')}</Form.Label>
             <Form.Control>
               <Select {...field} onValueChange={field.onChange}>
                 <Select.Trigger>
@@ -190,7 +198,7 @@ export const ReviewFormFields = () => {
         name="title"
         render={({ field }) => (
           <Form.Item>
-            <Form.Label>Title</Form.Label>
+            <Form.Label>{t('reviews.fields.title')}</Form.Label>
             <Form.Control>
               <Input type="text" {...field} />
             </Form.Control>
@@ -202,7 +210,7 @@ export const ReviewFormFields = () => {
         name="content"
         render={({ field }) => (
           <Form.Item>
-            <Form.Label>Content</Form.Label>
+            <Form.Label>{t('reviews.fields.content')}</Form.Label>
             <Form.Control>
               <Textarea {...field} />
             </Form.Control>
@@ -215,7 +223,7 @@ export const ReviewFormFields = () => {
         name="recommend"
         render={({ field }) => (
           <Form.Item>
-            <Form.Label>I want to recommend the product</Form.Label>
+            <Form.Label>{t('reviews.fields.recommend')}</Form.Label>
             <Form.Control>
               <Select {...field} onValueChange={field.onChange}>
                 <Select.Trigger>
@@ -239,7 +247,7 @@ export const ReviewFormFields = () => {
         name="email"
         render={({ field }) => (
           <Form.Item>
-            <Form.Label>Email</Form.Label>
+            <Form.Label>{t('reviews.fields.email')}</Form.Label>
             <Form.Control>
               <Input type="text" {...field} />
             </Form.Control>

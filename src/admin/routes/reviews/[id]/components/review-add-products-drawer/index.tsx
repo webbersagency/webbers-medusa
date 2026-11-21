@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+import { LocalizedTablePagination } from '../../../../../components/common/localized-table-pagination';
 import {
   Button,
   Checkbox,
@@ -34,6 +36,7 @@ const AddProductsToTypeSchema = z.object({
 const limit = 15;
 
 const AddProductsDrawer = ({ open, onClose, review }: AddProductsDrawerProps) => {
+  const { t } = useTranslation('webbersMedusa');
   const { id } = useParams();
   const queryClient = useQueryClient();
   const [pagination, setPagination] = useState<DataTablePaginationState>({
@@ -68,12 +71,12 @@ const AddProductsDrawer = ({ open, onClose, review }: AddProductsDrawerProps) =>
       });
     },
     onSuccess: async () => {
-      toast.success(`Products added to review`);
+      toast.success(t('reviews.products.addSuccess'));
       await queryClient.invalidateQueries({ queryKey: ['review', id] });
       onClose();
     },
     onError: err => {
-      toast.error(err.message);
+      toast.error(t('reviews.products.addError'), { description: err.message });
     },
   });
 
@@ -156,6 +159,7 @@ const AddProductsDrawer = ({ open, onClose, review }: AddProductsDrawerProps) =>
       header: ({ table }) => {
         return (
           <Checkbox
+            aria-label={t('common.selectAll')}
             checked={table.getIsSomePageRowsSelected() ? 'indeterminate' : table.getIsAllPageRowsSelected()}
             onCheckedChange={value => table.toggleAllPageRowsSelected(!!value)}
           />
@@ -169,6 +173,7 @@ const AddProductsDrawer = ({ open, onClose, review }: AddProductsDrawerProps) =>
 
         return (
           <Checkbox
+            aria-label={t('common.selectItem', { name: row.original.title })}
             checked={isSelected}
             disabled={isDisabled}
             onCheckedChange={value => row.toggleSelected(!!value)}
@@ -181,9 +186,9 @@ const AddProductsDrawer = ({ open, onClose, review }: AddProductsDrawerProps) =>
     }),
     columnHelper.accessor('title', {
       enableSorting: true,
-      sortLabel: 'Title',
-      sortAscLabel: 'A-Z',
-      sortDescLabel: 'Z-A',
+      sortLabel: t('reviews.fields.title'),
+      sortAscLabel: t('common.sortAscending'),
+      sortDescLabel: t('common.sortDescending'),
       header: () => <ProductHeader />,
       cell: ({ row }) => <ProductCell product={row.original} />,
     }),
@@ -231,10 +236,10 @@ const AddProductsDrawer = ({ open, onClose, review }: AddProductsDrawerProps) =>
         <FocusModal.Header>
           <div className="flex items-center justify-end gap-x-2">
             <Button variant={'secondary'} size={'small'} onClick={onClose}>
-              Cancel
+              {t('common.cancel')}
             </Button>
             <Button variant={'primary'} size={'small'} type={'submit'} onClick={handleSubmit}>
-              Save
+              {t('common.save')}
             </Button>
           </div>
         </FocusModal.Header>
@@ -242,8 +247,8 @@ const AddProductsDrawer = ({ open, onClose, review }: AddProductsDrawerProps) =>
           <DataTable instance={table} className="!border-t-0">
             <div className="flex items-start justify-end gap-x-4 px-6 py-4">
               <div className="flex shrink-0 items-center gap-x-2">
-                <DataTable.Search placeholder={'Search'} />
-                <DataTable.SortingMenu />
+                <DataTable.Search placeholder={t('common.search')} />
+                <DataTable.SortingMenu tooltip={t('common.sort')} />
               </div>
             </div>
             <DataTable.Table
@@ -253,15 +258,15 @@ const AddProductsDrawer = ({ open, onClose, review }: AddProductsDrawerProps) =>
                     <div className="flex flex-col items-center gap-y-3">
                       <ExclamationCircle />
                       <div className="flex flex-col items-center gap-y-1">
-                        <p className="font-medium font-sans txt-compact-small">No records</p>
-                        <p className="font-normal font-sans txt-small text-ui-fg-muted">There are no records to show</p>
+                        <p className="font-medium font-sans txt-compact-small">{t('common.noRecords')}</p>
+                        <p className="font-normal font-sans txt-small text-ui-fg-muted">{t('common.noRecordsDescription')}</p>
                       </div>
                     </div>
                   ),
                 },
               }}
             />
-            <DataTable.Pagination />
+            <LocalizedTablePagination />
           </DataTable>
         </FocusModal.Body>
       </FocusModal.Content>

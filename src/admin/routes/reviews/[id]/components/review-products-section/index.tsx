@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+import { LocalizedTablePagination } from '../../../../../components/common/localized-table-pagination';
 import {
   Checkbox,
   Container,
@@ -33,6 +35,7 @@ import { useParams } from 'react-router-dom';
 const limit = 15;
 
 const ReviewProductsSection = ({ review }: ReviewProductsSectionProps) => {
+  const { t } = useTranslation('webbersMedusa');
   const dialog = usePrompt();
   const queryClient = useQueryClient();
   const { id } = useParams();
@@ -88,15 +91,17 @@ const ReviewProductsSection = ({ review }: ReviewProductsSectionProps) => {
       }),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['review', id] });
-      toast.success('Deleted product from review');
+      toast.success(t('reviews.products.removeSuccess'));
       form.reset();
     },
   });
 
   const handleRemove = async (product: AdminProduct) => {
     const confirmed = await dialog({
-      title: 'Are you sure?',
-      description: `You are about to delete ${product.title} from the review. This action cannot be undone.`,
+      title: t('common.confirmTitle'),
+      confirmText: t('common.confirm'),
+      cancelText: t('common.cancel'),
+      description: t('reviews.products.removeConfirm', { title: product.title }),
     });
 
     if (!confirmed) {
@@ -110,8 +115,10 @@ const ReviewProductsSection = ({ review }: ReviewProductsSectionProps) => {
     const ids = Object.keys(selection);
 
     const confirmed = await dialog({
-      title: 'Are you sure?',
-      description: `You are about to delete ${ids.length} products from the review. This action cannot be undone.`,
+      title: t('common.confirmTitle'),
+      confirmText: t('common.confirm'),
+      cancelText: t('common.cancel'),
+      description: t('reviews.products.removeBatchConfirm', { count: ids.length }),
     });
 
     if (!confirmed) {
@@ -189,6 +196,7 @@ const ReviewProductsSection = ({ review }: ReviewProductsSectionProps) => {
       header: ({ table }) => {
         return (
           <Checkbox
+            aria-label={t('common.selectAll')}
             checked={table.getIsSomePageRowsSelected() ? 'indeterminate' : table.getIsAllPageRowsSelected()}
             onCheckedChange={value => table.toggleAllPageRowsSelected(!!value)}
           />
@@ -197,6 +205,7 @@ const ReviewProductsSection = ({ review }: ReviewProductsSectionProps) => {
       cell: ({ row }) => {
         return (
           <Checkbox
+            aria-label={t('common.selectItem', { name: row.original.title })}
             checked={row.getIsSelected()}
             onCheckedChange={value => row.toggleSelected(!!value)}
             onClick={e => {
@@ -208,9 +217,9 @@ const ReviewProductsSection = ({ review }: ReviewProductsSectionProps) => {
     }),
     columnHelper.accessor('title', {
       enableSorting: true,
-      sortLabel: 'Title',
-      sortAscLabel: 'A-Z',
-      sortDescLabel: 'Z-A',
+      sortLabel: t('reviews.fields.title'),
+      sortAscLabel: t('common.sortAscending'),
+      sortDescLabel: t('common.sortDescending'),
       header: () => <ProductHeader />,
       cell: ({ row }) => <ProductCell product={row.original} />,
     }),
@@ -225,12 +234,12 @@ const ReviewProductsSection = ({ review }: ReviewProductsSectionProps) => {
     columnHelper.action({
       actions: [
         {
-          label: 'Edit',
+          label: t('common.edit'),
           onClick: row => (window.location.href = `/app/products/${row?.row?.original?.id}/edit`),
           icon: <Pencil />,
         },
         {
-          label: 'Delete',
+          label: t('common.delete'),
           onClick: row => handleRemove(row.row.original),
           icon: <Trash />,
         },
@@ -261,7 +270,7 @@ const ReviewProductsSection = ({ review }: ReviewProductsSectionProps) => {
     },
     commands: [
       {
-        label: 'Remove',
+        label: t('common.remove'),
         action: handleRemoveRows,
         shortcut: 'r',
       },
@@ -273,7 +282,7 @@ const ReviewProductsSection = ({ review }: ReviewProductsSectionProps) => {
   return (
     <Container className="divide-y p-0">
       <Header
-        title={'Products'}
+        title={t('products.title')}
         actions={[
           {
             type: 'action-menu',
@@ -282,7 +291,7 @@ const ReviewProductsSection = ({ review }: ReviewProductsSectionProps) => {
                 {
                   actions: [
                     {
-                      label: 'Add products',
+                      label: t('reviews.products.add'),
                       icon: <Plus />,
                       onClick: () => openAddProductState(),
                     },
@@ -296,7 +305,7 @@ const ReviewProductsSection = ({ review }: ReviewProductsSectionProps) => {
       <DataTable instance={table}>
         <div className="flex items-start justify-end gap-x-4 px-6 py-4">
           <div className="flex shrink-0 items-center gap-x-2">
-            <DataTable.Search placeholder={'Search'} />
+            <DataTable.Search placeholder={t('common.search')} />
           </div>
         </div>
         <DataTable.Table
@@ -306,16 +315,16 @@ const ReviewProductsSection = ({ review }: ReviewProductsSectionProps) => {
                 <div className="flex flex-col items-center gap-y-3">
                   <ExclamationCircle />
                   <div className="flex flex-col items-center gap-y-1">
-                    <p className="font-medium font-sans txt-compact-small">No records</p>
-                    <p className="font-normal font-sans txt-small text-ui-fg-muted">There are no records to show</p>
+                    <p className="font-medium font-sans txt-compact-small">{t('common.noRecords')}</p>
+                    <p className="font-normal font-sans txt-small text-ui-fg-muted">{t('common.noRecordsDescription')}</p>
                   </div>
                 </div>
               ),
             },
           }}
         />
-        {hasRows && <DataTable.Pagination />}
-        <DataTable.CommandBar />
+        {hasRows && <LocalizedTablePagination />}
+        <DataTable.CommandBar selectedLabel={count => t('common.selected', { count })} />
       </DataTable>
       <AddProductsDrawer open={addProductState} onClose={closeAddProductState} review={review} />
     </Container>

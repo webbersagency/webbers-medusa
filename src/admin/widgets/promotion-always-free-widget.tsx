@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import {DetailWidgetProps, AdminPromotion} from "@medusajs/framework/types"
 import {defineWidgetConfig} from "@medusajs/admin-sdk"
 import {useQuery} from "@tanstack/react-query"
@@ -16,6 +17,7 @@ type AdminPromotionAlwaysFree = AdminPromotion & {
 const PromotionAlwaysFreeWidget = ({
   data: promotion,
 }: DetailWidgetProps<AdminPromotion>) => {
+  const { t } = useTranslation('webbersMedusa');
   const {data: queryResult} = useQuery({
     queryFn: () =>
       sdk.admin.promotion.retrieve(promotion.id, {
@@ -44,11 +46,11 @@ const PromotionAlwaysFreeWidget = ({
 
   const handleChange = async () => {
     const confirmed = await dialog({
-      title: "Change free shipping?",
-      description: "Are you sure you want to change the free shipping status?",
+      title: t('promotion.confirmTitle'),
+      description: t('promotion.confirmDescription'),
       variant: "confirmation",
-      confirmText: "Confirm",
-      cancelText: "Cancel",
+      confirmText: t('common.confirm'),
+      cancelText: t('common.cancel'),
     })
 
     if (confirmed) {
@@ -74,7 +76,7 @@ const PromotionAlwaysFreeWidget = ({
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
-        <Heading level="h2">Free shipping</Heading>
+        <Heading level="h2">{t('promotion.title')}</Heading>
         <Switch
           id="always-free"
           checked={!!alwaysFree}

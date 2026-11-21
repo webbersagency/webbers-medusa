@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import React, { useEffect, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { sdk } from '../../lib/sdk';
@@ -21,6 +22,7 @@ function capitalizeFirstLetter(val: string) {
 }
 
 const NoteWidget = ({ entityType, entityId }: { entityType: string; entityId: string }) => {
+  const { t } = useTranslation('webbersMedusa');
   const [note, setNote] = useState('');
   const queryClient = useQueryClient();
 
@@ -48,7 +50,7 @@ const NoteWidget = ({ entityType, entityId }: { entityType: string; entityId: st
       });
     },
     onSuccess: async () => {
-      toast.success('Note updated successfully');
+      toast.success(t('notes.success'));
       await queryClient.invalidateQueries({
         queryKey: [['note', entityId]],
       });
@@ -66,10 +68,12 @@ const NoteWidget = ({ entityType, entityId }: { entityType: string; entityId: st
     <Container className="divide-y p-0">
       <form onSubmit={onSave}>
         <div className="flex items-center justify-between px-6 py-4 border-b">
-          <Heading level="h2">{capitalizeFirstLetter(entityType)} Note</Heading>
+          <Heading level="h2">{entityType === 'customer' || entityType === 'order'
+              ? t(`notes.${entityType}`)
+              : t('notes.entity', { entity: capitalizeFirstLetter(entityType) })}</Heading>
 
           <Button size="small" variant="primary" disabled={loading} type={'submit'} isLoading={loading}>
-            {loading ? 'Saving...' : 'Save note'}
+            {loading ? t('common.saving') : t('notes.save')}
           </Button>
         </div>
 

@@ -1,4 +1,5 @@
 import { LoaderFunctionArgs, UIMatch, useNavigate, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { sdk } from '../../../sdk.ts';
@@ -54,8 +55,13 @@ export async function loader({ params }: LoaderFunctionArgs) {
   return { review: reviews?.[0] };
 }
 
+const ReviewBreadcrumb = () => {
+  const { t } = useTranslation('webbersMedusa');
+  return <>{t('reviews.singular')}</>;
+};
+
 export const handle = {
-  breadcrumb: ({ data }: UIMatch<{ review?: Review }>) => data?.review?.title || data?.review?.name || 'Review',
+  breadcrumb: ({ data }: UIMatch<{ review?: Review }>) => data?.review?.title || data?.review?.name || <ReviewBreadcrumb />,
 };
 
 export default ReviewDetailPage;

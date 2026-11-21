@@ -1,13 +1,15 @@
+import { useTranslation } from 'react-i18next';
 import { Container, Heading, Text } from '@medusajs/ui';
 import { ReviewImagesSectionProps } from './types.ts';
 
 const ReviewImagesSection = ({ review }: ReviewImagesSectionProps) => {
+  const { t } = useTranslation('webbersMedusa');
   const images = review.images ?? [];
 
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
-        <Heading level="h2">Photos</Heading>
+        <Heading level="h2">{t('reviews.photos')}</Heading>
       </div>
       {images.length ? (
         <div className="grid grid-cols-2 gap-4 px-6 py-4 sm:grid-cols-4">
@@ -26,7 +28,7 @@ const ReviewImagesSection = ({ review }: ReviewImagesSectionProps) => {
       ) : (
         <div className="px-6 py-4">
           <Text size="small" className="text-ui-fg-muted">
-            This review has no photos.
+            {t('reviews.noPhotos')}
           </Text>
         </div>
       )}
