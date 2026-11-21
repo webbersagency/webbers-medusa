@@ -1,14 +1,16 @@
+import { useTranslation } from 'react-i18next';
 import { defineRouteConfig } from '@medusajs/admin-sdk';
 import { Adjustments } from '@medusajs/icons';
 import { Container, Heading, Switch, Text, toast } from '@medusajs/ui';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { sdk } from '../../../lib/sdk';
 import { useFeatureFlags, WEBBERS_SETTINGS_QUERY_KEY } from '../../../lib/use-feature-flags';
-import { WEBBERS_FEATURES } from '../../../../feature-flags';
+import { WEBBERS_FEATURE_KEYS } from '../../../../feature-flags';
 
 type FlagsResponse = { flags: Record<string, boolean> };
 
 const WebbersSettingsPage = () => {
+  const { t } = useTranslation('webbersMedusa');
   const queryClient = useQueryClient();
   const { data, isLoading } = useFeatureFlags();
 
@@ -20,9 +22,9 @@ const WebbersSettingsPage = () => {
       }),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: WEBBERS_SETTINGS_QUERY_KEY });
-      toast.success('Settings saved');
+      toast.success(t('settings.success'));
     },
-    onError: () => toast.error('Failed to save settings'),
+    onError: () => toast.error(t('settings.error')),
   });
 
   const flags = data?.flags ?? {};
@@ -30,29 +32,29 @@ const WebbersSettingsPage = () => {
   return (
     <Container className="divide-y p-0">
       <div className="px-6 py-4">
-        <Heading level="h1">Webbers QoL features</Heading>
+        <Heading level="h1">{t('settings.title')}</Heading>
         <Text size="small" className="text-ui-fg-subtle">
-          Enable or disable the quality-of-life features provided by this plugin. Disabling a feature
-          hides its admin widget and blocks its endpoints.
+          {t('settings.description')}
         </Text>
       </div>
 
-      {WEBBERS_FEATURES.map((feature) => {
-        const enabled = flags[feature.key] ?? true;
+      {WEBBERS_FEATURE_KEYS.map((key) => {
+        const enabled = flags[key] ?? true;
         return (
-          <div key={feature.key} className="flex items-center justify-between gap-x-4 px-6 py-4">
+          <div key={key} className="flex items-center justify-between gap-x-4 px-6 py-4">
             <div className="flex flex-col">
               <Text weight="plus" size="small">
-                {feature.label}
+                {t(`settings.features.${key}.label`)}
               </Text>
               <Text size="small" className="text-ui-fg-subtle">
-                {feature.description}
+                {t(`settings.features.${key}.description`)}
               </Text>
             </div>
             <Switch
+              aria-label={t(`settings.features.${key}.label`)}
               checked={enabled}
               disabled={isLoading || isPending}
-              onCheckedChange={(next) => mutate({ [feature.key]: next })}
+              onCheckedChange={(next) => mutate({ [key]: next })}
             />
           </div>
         );
@@ -62,7 +64,8 @@ const WebbersSettingsPage = () => {
 };
 
 export const config = defineRouteConfig({
-  label: 'Webbers QoL',
+  label: 'settings.nav',
+  translationNs: 'webbersMedusa',
   icon: Adjustments,
 });
 

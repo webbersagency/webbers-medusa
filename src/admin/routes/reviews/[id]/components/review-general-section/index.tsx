@@ -1,16 +1,19 @@
+import { useTranslation } from 'react-i18next';
 import { Copy, Heading, StatusBadge, toast, usePrompt, useToggleState } from '@medusajs/ui';
 import { ActionMenu } from '../../../../../components/common/action-menu';
 import { CheckCircleSolid, FlagMini, PencilSquare, Trash } from '@medusajs/icons';
 import { ReviewGeneralSectionProps } from './types.ts';
-import { getReviewstatus } from '../../../../../components/table-cells/common/status-cell';
+import { getReviewStatus } from '../../../../../components/table-cells/common/status-cell';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { sdk } from '../../../../../sdk.ts';
 import ReviewEditModal from '../review-edit-modal';
 import { StarRatingCell } from '../../../page.tsx';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ageOptions, genderOptions } from '../../../components/review-form';
+import { useReviewOptions } from '../../../components/review-form';
 
 const ReviewGeneralSection = ({ review }: ReviewGeneralSectionProps) => {
+  const { t } = useTranslation('webbersMedusa');
+  const { ageOptions, genderOptions } = useReviewOptions();
   const navigate = useNavigate();
   const dialog = usePrompt();
   const queryClient = useQueryClient();
@@ -29,11 +32,11 @@ const ReviewGeneralSection = ({ review }: ReviewGeneralSectionProps) => {
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['review', id] });
       await queryClient.invalidateQueries({ queryKey: ['reviews'] });
-      toast.success('Review status updated successfully');
+      toast.success(t('reviews.statusSuccess'));
     },
     onError: err => {
       console.error(err);
-      toast.error('Failed to update review status');
+      toast.error(t('reviews.statusError'));
     },
   });
 
@@ -48,19 +51,21 @@ const ReviewGeneralSection = ({ review }: ReviewGeneralSectionProps) => {
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['review', id] });
       await queryClient.invalidateQueries({ queryKey: ['reviews'] });
-      toast.success('Review deleted succesfully');
+      toast.success(t('reviews.deleteSuccess'));
       navigate('/reviews');
     },
     onError: err => {
       console.error(err);
-      toast.error('Failed to update review status');
+      toast.error(t('reviews.deleteError'));
     },
   });
 
   const handleRemove = async () => {
     const confirmed = await dialog({
-      title: 'Are you sure?',
-      description: `You are about to delete this review? This action cannot be undone.`,
+      title: t('common.confirmTitle'),
+      confirmText: t('common.confirm'),
+      cancelText: t('common.cancel'),
+      description: t('reviews.deleteConfirm'),
     });
 
     if (!confirmed) {
@@ -70,7 +75,7 @@ const ReviewGeneralSection = ({ review }: ReviewGeneralSectionProps) => {
     await deleteReview.mutateAsync({ reviewId: review.id });
   };
 
-  const reviewStatus = getReviewstatus(review.status);
+  const reviewStatus = getReviewStatus(review.status);
 
   const canApprove = review.status === 'pending' || review.status === 'flagged';
   const canFlag = review.status === 'pending' || review.status === 'approved';
@@ -83,25 +88,25 @@ const ReviewGeneralSection = ({ review }: ReviewGeneralSectionProps) => {
         <div>
           <div className="flex items-center gap-x-1">
             <Heading>{review?.id}</Heading>
-            <Copy content={`${review?.id}`} className="text-ui-fg-muted" />
+            <Copy content={review.id} className="text-ui-fg-muted" aria-label={t('reviews.copyId')} />
           </div>
         </div>
         <div className="flex items-center gap-x-4">
           <div className="flex items-center gap-x-1.5">
-            <StatusBadge color={reviewStatus.color}>{reviewStatus.label}</StatusBadge>
+            <StatusBadge color={reviewStatus.color}>{t(reviewStatus.label)}</StatusBadge>
           </div>
           <ActionMenu
             groups={[
               {
                 actions: [
                   {
-                    label: 'Edit',
+                    label: t('common.edit'),
                     onClick: open,
                     icon: <PencilSquare />,
                   },
                   {
                     icon: <CheckCircleSolid />,
-                    label: 'Approve',
+                    label: t('reviews.approve'),
                     disabled: !canApprove || isUpdatingThisRow,
                     onClick: () =>
                       updateReviewStatus.mutate({
@@ -111,7 +116,7 @@ const ReviewGeneralSection = ({ review }: ReviewGeneralSectionProps) => {
                   },
                   {
                     icon: <FlagMini />,
-                    label: 'Flag',
+                    label: t('reviews.flag'),
                     disabled: !canFlag || isUpdatingThisRow,
                     onClick: () =>
                       updateReviewStatus.mutate({
@@ -121,7 +126,7 @@ const ReviewGeneralSection = ({ review }: ReviewGeneralSectionProps) => {
                   },
                   {
                     icon: <Trash />,
-                    label: 'Delete',
+                    label: t('common.delete'),
                     onClick: () => handleRemove(),
                   },
                 ],
@@ -132,45 +137,45 @@ const ReviewGeneralSection = ({ review }: ReviewGeneralSectionProps) => {
       </div>
       <div className="w-full p-0 divide-y">
         <div className="text-ui-fg-subtle grid grid-cols-2 items-center py-4 px-6">
-          <p className="font-medium font-sans txt-compact-small">Rating</p>
+          <p className="font-medium font-sans txt-compact-small">{t('reviews.fields.rating')}</p>
           <p className="font-normal font-sans txt-compact-small">
             {review.rating ? <StarRatingCell rating={review.rating} /> : '-'}
           </p>
         </div>
         <div className="text-ui-fg-subtle grid grid-cols-2 items-center py-4 px-6">
-          <p className="font-medium font-sans txt-compact-small">Name</p>
+          <p className="font-medium font-sans txt-compact-small">{t('reviews.fields.name')}</p>
           <p className="font-normal font-sans txt-compact-small">{review.name ?? '-'}</p>
         </div>
         <div className="text-ui-fg-subtle grid grid-cols-2 items-center py-4 px-6">
-          <p className="font-medium font-sans txt-compact-small">City</p>
+          <p className="font-medium font-sans txt-compact-small">{t('reviews.fields.city')}</p>
           <p className="font-normal font-sans txt-compact-small">{review.city ?? '-'}</p>
         </div>
         <div className="text-ui-fg-subtle grid grid-cols-2 items-center py-4 px-6">
-          <p className="font-medium font-sans txt-compact-small">Age</p>
+          <p className="font-medium font-sans txt-compact-small">{t('reviews.fields.age')}</p>
           <p className="font-normal font-sans txt-compact-small">
             {ageOptions.find(o => o.value === review.age)?.label ?? '-'}
           </p>
         </div>
         <div className="text-ui-fg-subtle grid grid-cols-2 items-center py-4 px-6">
-          <p className="font-medium font-sans txt-compact-small">Gender</p>
+          <p className="font-medium font-sans txt-compact-small">{t('reviews.fields.gender')}</p>
           <p className="font-normal font-sans txt-compact-small">
             {genderOptions.find(o => o.value === review.gender)?.label ?? '-'}
           </p>
         </div>
         <div className="text-ui-fg-subtle grid grid-cols-2 items-center py-4 px-6">
-          <p className="font-medium font-sans txt-compact-small">Title</p>
+          <p className="font-medium font-sans txt-compact-small">{t('reviews.fields.title')}</p>
           <p className="font-normal font-sans txt-compact-small">{review.title ?? '-'}</p>
         </div>
         <div className="text-ui-fg-subtle grid grid-cols-2 items-center py-4 px-6">
-          <p className="font-medium font-sans txt-compact-small">Content</p>
+          <p className="font-medium font-sans txt-compact-small">{t('reviews.fields.content')}</p>
           <p className="font-normal font-sans txt-compact-small">{review.content ?? '-'}</p>
         </div>
         <div className="text-ui-fg-subtle grid grid-cols-2 items-center py-4 px-6">
-          <p className="font-medium font-sans txt-compact-small">Recommended</p>
-          <p className="font-normal font-sans txt-compact-small">{review.recommend ? 'Yes' : 'No'}</p>
+          <p className="font-medium font-sans txt-compact-small">{t('reviews.fields.recommended')}</p>
+          <p className="font-normal font-sans txt-compact-small">{review.recommend ? t('common.yes') : t('common.no')}</p>
         </div>
         <div className="text-ui-fg-subtle grid grid-cols-2 items-center py-4 px-6">
-          <p className="font-medium font-sans txt-compact-small">Email</p>
+          <p className="font-medium font-sans txt-compact-small">{t('reviews.fields.email')}</p>
           <p className="font-normal font-sans txt-compact-small">{review.email ?? '-'}</p>
         </div>
       </div>

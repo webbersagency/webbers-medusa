@@ -1,0 +1,261 @@
+{
+  "common": {
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "confirmTitle": "Are you sure?",
+    "create": "Create",
+    "date": "Date",
+    "delete": "Delete",
+    "edit": "Edit",
+    "filter": "Filter",
+    "loading": "Loading…",
+    "no": "No",
+    "noRecords": "No records",
+    "noRecordsDescription": "There are no records to show.",
+    "optional": "Optional",
+    "remove": "Remove",
+    "save": "Save",
+    "saving": "Saving…",
+    "search": "Search",
+    "selectAll": "Select all rows on this page",
+    "selectItem": "Select {{name}}",
+    "selected_one": "{{count, number}} selected",
+    "selected_other": "{{count, number}} selected",
+    "sort": "Sort",
+    "sortAscending": "A–Z",
+    "sortDescending": "Z–A",
+    "status": "Status",
+    "yes": "Yes",
+    "pagination": {
+      "of": "of",
+      "results": "results",
+      "pages": "pages",
+      "previous": "Previous",
+      "next": "Next"
+    }
+  },
+  "coupons": {
+    "title": "Unique coupon codes",
+    "subtitle": "Generate single-use codes from a promotion in this campaign, for example for a Klaviyo flow.",
+    "noTemplates": "First add a promotion with a code to this campaign. It serves as the template for the discount and its conditions. Keep the template as a draft so nobody can redeem the template code itself.",
+    "template": "Template promotion",
+    "templatePlaceholder": "Choose a promotion",
+    "quantity": "Number of codes (maximum {{max, number}} at a time)",
+    "prefix": "Prefix (optional)",
+    "prefixHint": "Enter 2 to 12 letters or digits, or leave blank. Example code: {{example}}.",
+    "submit": "Generate codes",
+    "draft": "draft",
+    "createdAt": "Created",
+    "batchPrefix": "Prefix",
+    "total": "Codes",
+    "used": "Used",
+    "remaining": "Unused",
+    "download": "Download CSV",
+    "empty": "No codes have been generated for this campaign yet.",
+    "generated_one": "{{count, number}} code created. The CSV was downloaded. Upload it to the coupon in Klaviyo.",
+    "generated_other": "{{count, number}} codes created. The CSV was downloaded. Upload it to the coupon in Klaviyo.",
+    "error": "The codes could not be created",
+    "downloadError": "The CSV could not be downloaded"
+  },
+  "customer": {
+    "anonymize": {
+      "title": "GDPR",
+      "description": "Permanently removes all personal data for this customer (GDPR request). This action cannot be undone.",
+      "confirmTitle": "Anonymize customer?",
+      "confirmDescription": "This permanently removes the customer’s name, address, phone, email, and payment information across all orders, carts, and subscriptions. This action cannot be undone.",
+      "action": "Anonymize",
+      "pending": "Anonymizing…",
+      "success": "Customer anonymized",
+      "error": "Could not anonymize the customer"
+    },
+    "email": {
+      "title": "Customer email",
+      "save": "Save email",
+      "success": "Email updated",
+      "error": "Could not update the email address"
+    },
+    "guestOrders": {
+      "title": "Guest orders",
+      "description_one": "Found {{count, number}} unassigned guest order for {{email}}. Merge it into this customer account.",
+      "description_other": "Found {{count, number}} unassigned guest orders for {{email}}. Merge them into this customer account.",
+      "merge": "Merge guest orders",
+      "success_one": "{{count, number}} guest order moved to this customer",
+      "success_other": "{{count, number}} guest orders moved to this customer",
+      "error": "Failed to merge guest orders"
+    }
+  },
+  "metadata": {
+    "title": "Metadata",
+    "keyCount_one": "{{count, number}} key",
+    "keyCount_other": "{{count, number}} keys",
+    "edit": "Edit metadata",
+    "key": "Key",
+    "value": "Value",
+    "rowDisabled": "This row is disabled because it contains non-primitive data.",
+    "insertAbove": "Insert row above",
+    "insertBelow": "Insert row below",
+    "deleteRow": "Delete row",
+    "success": "Metadata updated successfully",
+    "error": "Failed to update metadata"
+  },
+  "notes": {
+    "customer": "Customer note",
+    "order": "Order note",
+    "entity": "{{entity}} note",
+    "save": "Save note",
+    "success": "Note updated successfully"
+  },
+  "orders": {
+    "discounts": {
+      "title": "Discount breakdown"
+    },
+    "notifications": {
+      "title": "Notifications",
+      "empty": "No notifications sent",
+      "invoice": "Invoice email"
+    }
+  },
+  "priceList": {
+    "title": "Disallow discounts",
+    "description": "Discounts can’t override this price list if this toggle is enabled."
+  },
+  "products": {
+    "product": "Product",
+    "title": "Products",
+    "variants": "Variants",
+    "variantCount_one": "{{count, number}} variant",
+    "variantCount_other": "{{count, number}} variants",
+    "status": {
+      "draft": "Draft",
+      "proposed": "Proposed",
+      "published": "Published",
+      "rejected": "Rejected"
+    }
+  },
+  "promotion": {
+    "title": "Free shipping",
+    "confirmTitle": "Change free shipping?",
+    "confirmDescription": "Are you sure you want to change the free shipping status?"
+  },
+  "reviews": {
+    "title": "Reviews",
+    "singular": "Review",
+    "copyId": "Copy review ID",
+    "disabled": "The reviews feature is disabled. Enable it under Settings → Webbers QoL.",
+    "photo": "Photo",
+    "photos": "Photos",
+    "noPhotos": "This review has no photos.",
+    "noPhotosFirst": "Without photos first",
+    "photosFirst": "With photos first",
+    "approve": "Approve",
+    "flag": "Flag",
+    "status": {
+      "approved": "Approved",
+      "pending": "Pending",
+      "flagged": "Flagged"
+    },
+    "statusSuccess": "Review status updated successfully",
+    "statusError": "Failed to update review status",
+    "createTitle": "Create review",
+    "createSuccess": "Review created successfully",
+    "createError": "Failed to create review",
+    "editTitle": "Edit review",
+    "editSuccess": "Review updated successfully",
+    "editError": "Failed to update review",
+    "deleteConfirm": "This will delete the review permanently. This action cannot be undone.",
+    "deleteSuccess": "Review deleted successfully",
+    "deleteError": "Failed to delete review",
+    "fields": {
+      "name": "Name",
+      "title": "Title",
+      "rating": "Rating",
+      "city": "City",
+      "cityOptional": "City (optional)",
+      "age": "Age",
+      "ageOptional": "Age (optional)",
+      "gender": "Gender",
+      "genderOptional": "Gender (optional)",
+      "content": "Content",
+      "recommend": "I want to recommend the product",
+      "recommended": "Recommended",
+      "email": "Email"
+    },
+    "options": {
+      "notApplicable": "Not applicable",
+      "male": "Male",
+      "female": "Female",
+      "other": "Other / X",
+      "undisclosed": "Prefer not to say"
+    },
+    "products": {
+      "add": "Add products",
+      "addSuccess": "Products added to review",
+      "addError": "Failed to add products to review",
+      "removeConfirm": "This will remove {{title}} from the review. This action cannot be undone.",
+      "removeBatchConfirm_one": "This will remove {{count, number}} product from the review. This action cannot be undone.",
+      "removeBatchConfirm_other": "This will remove {{count, number}} products from the review. This action cannot be undone.",
+      "removeSuccess": "Products removed from the review"
+    },
+    "translations": {
+      "title": "Translations",
+      "action": "Translate",
+      "status": "Status ({{language}})",
+      "titleLabel": "Title ({{language}})",
+      "content": "Content ({{language}})",
+      "missing": "Not translated",
+      "current": "Up to date",
+      "outdated": "Outdated",
+      "success": "Review translated successfully",
+      "error": "Failed to translate review"
+    }
+  },
+  "settings": {
+    "nav": "Webbers QoL",
+    "title": "Webbers QoL features",
+    "description": "Enable or disable the quality-of-life features provided by this plugin. Disabling a feature hides its admin widget and blocks its endpoints.",
+    "success": "Settings saved",
+    "error": "Failed to save settings",
+    "features": {
+      "notes": {
+        "label": "Notes",
+        "description": "Free-text notes on customer and order detail pages."
+      },
+      "anonymizeCustomer": {
+        "label": "Anonymize customer",
+        "description": "GDPR erasure action on the customer page (superadmins only)."
+      },
+      "transferGuestOrders": {
+        "label": "Transfer guest orders",
+        "description": "Merge unassigned guest orders into a customer account."
+      },
+      "editCustomerEmail": {
+        "label": "Edit customer email",
+        "description": "Change a registered customer’s email from the customer page."
+      },
+      "orderDiscountBreakdown": {
+        "label": "Order discount breakdown",
+        "description": "Summary of discount codes applied to an order."
+      },
+      "orderNotifications": {
+        "label": "Order notifications",
+        "description": "List of transactional emails sent for an order."
+      },
+      "alwaysFreePromotion": {
+        "label": "Always-free promotion",
+        "description": "Free-shipping toggle on the promotion page (widget only)."
+      },
+      "disallowPriceListDiscounts": {
+        "label": "Disallow price-list discounts",
+        "description": "Toggle on a price list to stop discount codes from overriding its prices."
+      },
+      "uniqueCouponCodes": {
+        "label": "Unique coupon codes",
+        "description": "Generate single-use codes from a template promotion on the campaign page, with a CSV download."
+      },
+      "reviews": {
+        "label": "Product reviews",
+        "description": "Product reviews in the Admin, Store API, and review statistics."
+      }
+    }
+  }
+}

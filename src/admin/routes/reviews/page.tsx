@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+import { LocalizedTablePagination } from '../../components/common/localized-table-pagination';
 import {
   Button,
   Container,
@@ -131,6 +133,7 @@ export const StarRatingCell = ({ rating, max = 5 }: { rating: number; max?: numb
 };
 
 const ReviewOverviewPage = () => {
+  const { t } = useTranslation('webbersMedusa');
   const dialog = usePrompt();
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -220,12 +223,12 @@ const ReviewOverviewPage = () => {
       });
     },
     onSuccess: async () => {
-      toast.success('Successfully updated review status.');
+      toast.success(t('reviews.statusSuccess'));
       await queryClient.invalidateQueries({ queryKey: ['reviews'] });
       await queryClient.invalidateQueries({ queryKey: ['review'] });
     },
     onError: () => {
-      toast.error('Failed to update review status.');
+      toast.error(t('reviews.statusError'));
     },
   });
 
@@ -238,18 +241,20 @@ const ReviewOverviewPage = () => {
       });
     },
     onSuccess: async () => {
-      toast.success('Successfully deleted review.');
+      toast.success(t('reviews.deleteSuccess'));
       await queryClient.invalidateQueries({ queryKey: ['reviews'] });
     },
     onError: () => {
-      toast.error('Failed to delete review.');
+      toast.error(t('reviews.deleteError'));
     },
   });
 
   const handleRemove = async (id: string) => {
     const confirmed = await dialog({
-      title: 'Are you sure?',
-      description: `You are about to delete this review? This action cannot be undone.`,
+      title: t('common.confirmTitle'),
+      confirmText: t('common.confirm'),
+      cancelText: t('common.cancel'),
+      description: t('reviews.deleteConfirm'),
     });
 
     if (!confirmed) {
@@ -266,28 +271,28 @@ const ReviewOverviewPage = () => {
   const columns = useMemo(
     () => [
       columnHelper.accessor('created_at', {
-        header: 'Date',
+        header: t('common.date'),
         enableSorting: true,
         cell: ({ getValue }) => <DateCell date={new Date(getValue())} />,
       }),
       columnHelper.accessor('status', {
-        header: 'Status',
+        header: t('common.status'),
         enableSorting: true,
         cell: ({ getValue }) => <ReviewStatusCell status={getValue()} />,
       }),
-      columnHelper.accessor('name', { header: 'Name' }),
-      columnHelper.accessor('title', { header: 'Title' }),
+      columnHelper.accessor('name', { header: t('reviews.fields.name') }),
+      columnHelper.accessor('title', { header: t('reviews.fields.title') }),
       columnHelper.accessor('rating', {
-        header: 'Rating',
+        header: t('reviews.fields.rating'),
         enableSorting: true,
         cell: ({ getValue }) => <StarRatingCell rating={getValue()} />,
       }),
       columnHelper.accessor('has_images', {
-        header: 'Photo',
+        header: t('reviews.photo'),
         enableSorting: true,
-        sortLabel: 'Photo',
-        sortAscLabel: 'Without photo first',
-        sortDescLabel: 'With photo first',
+        sortLabel: t('reviews.photo'),
+        sortAscLabel: t('reviews.noPhotosFirst'),
+        sortDescLabel: t('reviews.photosFirst'),
         cell: ({ row }) => {
           const [firstImage] = row.original.images ?? [];
 
@@ -300,7 +305,7 @@ const ReviewOverviewPage = () => {
       }),
       columnHelper.display({
         id: 'actions',
-        header: 'Edit',
+        header: t('common.edit'),
         cell: ({ row }) => {
           const status = row.original.status;
 
@@ -317,7 +322,7 @@ const ReviewOverviewPage = () => {
                   actions: [
                     {
                       icon: <CheckCircleSolid />,
-                      label: 'Approve',
+                      label: t('reviews.approve'),
                       disabled: !canApprove || isUpdatingThisRow,
                       onClick: () =>
                         updateReviewStatus.mutate({
@@ -327,7 +332,7 @@ const ReviewOverviewPage = () => {
                     },
                     {
                       icon: <FlagMini />,
-                      label: 'Flag',
+                      label: t('reviews.flag'),
                       disabled: !canFlag || isUpdatingThisRow,
                       onClick: () =>
                         updateReviewStatus.mutate({
@@ -337,7 +342,7 @@ const ReviewOverviewPage = () => {
                     },
                     {
                       icon: <Trash />,
-                      label: 'Delete',
+                      label: t('common.delete'),
                       onClick: () => handleRemove(row.original.id),
                     },
                   ],
@@ -348,7 +353,7 @@ const ReviewOverviewPage = () => {
         },
       }),
     ],
-    [updateReviewStatus]
+    [t, updateReviewStatus]
   );
 
   const { data } = useQuery<ListReviewsResponse>({
@@ -385,16 +390,16 @@ const ReviewOverviewPage = () => {
     () => [
       filterHelper.accessor('status', {
         type: 'select',
-        label: 'Status',
+        label: t('common.status'),
         options: [
-          { label: 'Approved', value: 'approved' },
-          { label: 'Pending', value: 'pending' },
-          { label: 'Flagged', value: 'flagged' },
+          { label: t('reviews.status.approved'), value: 'approved' },
+          { label: t('reviews.status.pending'), value: 'pending' },
+          { label: t('reviews.status.flagged'), value: 'flagged' },
         ],
       }),
       filterHelper.accessor('rating', {
         type: 'select',
-        label: 'Rating',
+        label: t('reviews.fields.rating'),
         options: [
           { label: '1', value: '1' },
           { label: '2', value: '2' },
@@ -405,11 +410,11 @@ const ReviewOverviewPage = () => {
       }),
       filterHelper.accessor('product', {
         type: 'select',
-        label: 'Product',
+        label: t('products.product'),
         options: products?.map(p => ({ label: p.title, value: p.id })) || [],
       }),
     ],
-    [products]
+    [products, t]
   );
 
   const table = useDataTable({
@@ -435,13 +440,13 @@ const ReviewOverviewPage = () => {
     <Container className="divide-y p-0">
       <DataTable instance={table}>
         <DataTable.Toolbar className="flex flex-col items-start justify-between gap-2 md:flex-row md:items-center">
-          <Heading>Reviews</Heading>
+          <Heading>{t('reviews.title')}</Heading>
           <div className="flex gap-2">
-            {!IS_FILTER_BAR_WITH_MENUS && <DataTable.FilterMenu tooltip="Filter" />}
-            {!IS_FILTER_BAR_WITH_MENUS && <DataTable.SortingMenu tooltip="Sort" />}
-            <DataTable.Search placeholder="Search..." />
+            {!IS_FILTER_BAR_WITH_MENUS && <DataTable.FilterMenu tooltip={t('common.filter')} />}
+            {!IS_FILTER_BAR_WITH_MENUS && <DataTable.SortingMenu tooltip={t('common.sort')} />}
+            <DataTable.Search placeholder={t('common.search')} />
             <Button size="small" type="button" variant="secondary" onClick={open}>
-              Create
+              {t('common.create')}
             </Button>
           </div>{' '}
         </DataTable.Toolbar>
@@ -452,15 +457,15 @@ const ReviewOverviewPage = () => {
                 <div className="flex flex-col items-center gap-y-3">
                   <ExclamationCircle />
                   <div className="flex flex-col items-center gap-y-1">
-                    <p className="font-medium txt-compact-small">No records</p>
-                    <p className="font-normal txt-small text-ui-fg-muted">There are no records to show</p>
+                    <p className="font-medium txt-compact-small">{t('common.noRecords')}</p>
+                    <p className="font-normal txt-small text-ui-fg-muted">{t('common.noRecordsDescription')}</p>
                   </div>
                 </div>
               ),
             },
           }}
         />
-        <DataTable.Pagination />
+        <LocalizedTablePagination />
       </DataTable>
       <AddReviewDrawer state={state} onClose={close} />
     </Container>
@@ -468,26 +473,33 @@ const ReviewOverviewPage = () => {
 };
 
 export const config = defineRouteConfig({
-  label: 'Reviews',
+  label: 'reviews.title',
+  translationNs: 'webbersMedusa',
   icon: ChatBubble,
 });
 
+const ReviewsBreadcrumb = () => {
+  const { t } = useTranslation('webbersMedusa');
+  return <>{t('reviews.title')}</>;
+};
+
 export const handle = {
-  breadcrumb: () => 'Reviews',
+  breadcrumb: () => <ReviewsBreadcrumb />,
 };
 
 // The sidebar entry from defineRouteConfig cannot be hidden dynamically, so when the
 // feature is off the page explains where to re-enable it instead of rendering the table
 // (whose endpoints would return 403 anyway).
 const GatedReviewOverviewPage = () => {
+  const { t } = useTranslation('webbersMedusa');
   const enabled = useFeatureEnabled('reviews');
 
   if (!enabled) {
     return (
       <Container className="p-6">
-        <Heading level="h2">Reviews</Heading>
+        <Heading level="h2">{t('reviews.title')}</Heading>
         <p className="text-ui-fg-subtle mt-2">
-          The reviews feature is disabled. Enable it under Settings → Webbers QoL.
+          {t('reviews.disabled')}
         </p>
       </Container>
     );

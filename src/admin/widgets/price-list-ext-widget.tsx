@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { AdminPriceList, DetailWidgetProps, MetadataType } from '@medusajs/framework/types';
 import { defineWidgetConfig } from '@medusajs/admin-sdk';
 import { Container, Heading, Switch, Text } from '@medusajs/ui';
@@ -6,6 +7,7 @@ import { sdk } from '../lib/sdk';
 import { useFeatureEnabled } from '../lib/use-feature-flags';
 
 const PriceListExtWidget = ({ data }: DetailWidgetProps<AdminPriceList>) => {
+  const { t } = useTranslation('webbersMedusa');
   const { id } = data;
   const enabled = useFeatureEnabled('disallowPriceListDiscounts');
 
@@ -55,7 +57,7 @@ const PriceListExtWidget = ({ data }: DetailWidgetProps<AdminPriceList>) => {
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
-        <Heading level="h2">Disallow discounts</Heading>
+        <Heading level="h2">{t('priceList.title')}</Heading>
         <Switch
           checked={!!price_list_ext?.metadata?.disallow_discounts}
           onCheckedChange={handleToggle}
@@ -63,7 +65,7 @@ const PriceListExtWidget = ({ data }: DetailWidgetProps<AdminPriceList>) => {
         />
       </div>
       <div className="px-6 py-4">
-        <Text size="small">Discounts can't override this price list if this toggle is enabled.</Text>
+        <Text size="small">{t('priceList.description')}</Text>
       </div>
     </Container>
   );

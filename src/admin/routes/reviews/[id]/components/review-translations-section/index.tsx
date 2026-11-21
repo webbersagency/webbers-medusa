@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Button, Container, Heading, StatusBadge, toast } from '@medusajs/ui';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { sdk } from '../../../../../sdk.ts';
@@ -6,14 +7,15 @@ import { ReviewTranslationSettings, ReviewTranslationsSectionProps } from './typ
 
 const getTranslationStatus = (review: ReviewTranslationsSectionProps['review'], language: string) => {
   if (!getReviewTranslation(review, language)) {
-    return { color: 'grey' as const, label: 'Not translated' };
+    return { color: 'grey' as const, label: 'reviews.translations.missing' as const };
   }
   return isReviewTranslationCurrent(review, language)
-    ? { color: 'green' as const, label: 'Up to date' }
-    : { color: 'orange' as const, label: 'Outdated' };
+    ? { color: 'green' as const, label: 'reviews.translations.current' as const }
+    : { color: 'orange' as const, label: 'reviews.translations.outdated' as const };
 };
 
 const ReviewTranslationsSection = ({ review }: ReviewTranslationsSectionProps) => {
+  const { t } = useTranslation('webbersMedusa');
   const queryClient = useQueryClient();
 
   const { data: settings } = useQuery<ReviewTranslationSettings>({
@@ -26,11 +28,11 @@ const ReviewTranslationsSection = ({ review }: ReviewTranslationsSectionProps) =
     mutationFn: () => sdk.client.fetch(`/admin/reviews/${review.id}/translate`, { method: 'POST' }),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['review', review.id] });
-      toast.success('Review translated successfully');
+      toast.success(t('reviews.translations.success'));
     },
     onError: err => {
       console.error(err);
-      toast.error('Failed to translate review');
+      toast.error(t('reviews.translations.error'));
     },
   });
 
@@ -39,14 +41,14 @@ const ReviewTranslationsSection = ({ review }: ReviewTranslationsSectionProps) =
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
-        <Heading level="h2">Translations</Heading>
+        <Heading level="h2">{t('reviews.translations.title')}</Heading>
         <Button
           size="small"
           variant="secondary"
           isLoading={translateReview.isPending}
           onClick={() => translateReview.mutate()}
         >
-          Translate
+          {t('reviews.translations.action')}
         </Button>
       </div>
       {settings.target_languages.map(language => {
@@ -57,17 +59,19 @@ const ReviewTranslationsSection = ({ review }: ReviewTranslationsSectionProps) =
         return (
           <div key={language} className="divide-y">
             <div className="text-ui-fg-subtle grid grid-cols-2 items-center py-4 px-6">
-              <p className="font-medium font-sans txt-compact-small">Status ({languageLabel})</p>
+              <p className="font-medium font-sans txt-compact-small">{t('reviews.translations.status', { language: languageLabel })}</p>
               <div>
-                <StatusBadge color={translationStatus.color}>{translationStatus.label}</StatusBadge>
+                <StatusBadge color={translationStatus.color}>{t(translationStatus.label)}</StatusBadge>
               </div>
             </div>
             <div className="text-ui-fg-subtle grid grid-cols-2 items-center py-4 px-6">
-              <p className="font-medium font-sans txt-compact-small">Title ({languageLabel})</p>
+              <p className="font-medium font-sans txt-compact-small">
+                {t('reviews.translations.titleLabel', { language: languageLabel })}
+              </p>
               <p className="font-normal font-sans txt-compact-small">{translation?.title || '-'}</p>
             </div>
             <div className="text-ui-fg-subtle grid grid-cols-2 items-center py-4 px-6">
-              <p className="font-medium font-sans txt-compact-small">Content ({languageLabel})</p>
+              <p className="font-medium font-sans txt-compact-small">{t('reviews.translations.content', { language: languageLabel })}</p>
               <p className="font-normal font-sans txt-compact-small">{translation?.content || '-'}</p>
             </div>
           </div>

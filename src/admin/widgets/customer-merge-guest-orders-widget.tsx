@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { defineWidgetConfig } from '@medusajs/admin-sdk';
 import { Container, Heading, Text, Button, Badge, toast } from '@medusajs/ui';
 import { DetailWidgetProps, AdminCustomer } from '@medusajs/framework/types';
@@ -9,6 +10,7 @@ type GuestOrdersResponse = { count: number; email: string };
 type MergeResponse = { transferred_count: number };
 
 const CustomerMergeGuestOrdersWidget = ({ data }: DetailWidgetProps<AdminCustomer>) => {
+  const { t } = useTranslation('webbersMedusa');
   const queryClient = useQueryClient();
   const featureEnabled = useFeatureEnabled('transferGuestOrders');
 
@@ -25,10 +27,10 @@ const CustomerMergeGuestOrdersWidget = ({ data }: DetailWidgetProps<AdminCustome
       }),
     onSuccess: async result => {
       await queryClient.invalidateQueries({ queryKey: [] });
-      toast.success(`${result.transferred_count} guest order(s) moved to this customer`);
+      toast.success(t('customer.guestOrders.success', { count: result.transferred_count }));
     },
     onError: (error: any) => {
-      toast.error(error.message || 'Failed to merge guest orders');
+      toast.error(t('customer.guestOrders.error'), { description: error.message });
     },
   });
 
@@ -41,12 +43,12 @@ const CustomerMergeGuestOrdersWidget = ({ data }: DetailWidgetProps<AdminCustome
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
-        <Heading level="h2">Guest Orders</Heading>
+        <Heading level="h2">{t('customer.guestOrders.title')}</Heading>
         <Badge color="orange">{count}</Badge>
       </div>
       <div className="flex flex-col gap-y-3 px-6 py-4">
         <Text size="small" leading="compact" className="text-ui-fg-subtle">
-          {count} unassigned guest order(s) found for {guestData?.email}. Merge them into this customer account.
+          {t('customer.guestOrders.description', { count, email: guestData?.email })}
         </Text>
         <div>
           <Button
@@ -56,7 +58,7 @@ const CustomerMergeGuestOrdersWidget = ({ data }: DetailWidgetProps<AdminCustome
             disabled={mergeMutation.isPending}
             onClick={() => mergeMutation.mutate()}
           >
-            Merge guest orders
+            {t('customer.guestOrders.merge')}
           </Button>
         </div>
       </div>

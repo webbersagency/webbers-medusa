@@ -1,3 +1,4 @@
+import {useTranslation} from "react-i18next"
 import {InformationCircleSolid} from "@medusajs/icons"
 import {
   Hint as HintComponent,
@@ -114,6 +115,7 @@ const Label = forwardRef<
     ref
   ) => {
     const {formLabelId, formItemId} = useFormField()
+    const {t} = useTranslation("webbersMedusa")
 
     return (
       <div className="flex items-center gap-x-1">
@@ -139,7 +141,7 @@ const Label = forwardRef<
         {icon}
         {optional && (
           <Text size="small" leading="compact" className="text-ui-fg-muted">
-            Optional
+            {t("common.optional")}
           </Text>
         )}
       </div>

@@ -14,7 +14,7 @@ const fromMedusa = createRequire(require.resolve('@medusajs/medusa/package.json'
 const fromBundler = createRequire(fromMedusa.resolve('@medusajs/admin-bundler/package.json'));
 const dashboard = JSON.parse(readFileSync(fromBundler.resolve('@medusajs/dashboard/package.json'), 'utf8'));
 
-for (const name of ['@medusajs/ui', 'react-router-dom', '@tanstack/react-query']) {
+for (const name of ['@medusajs/ui', 'react-router-dom', '@tanstack/react-query', 'react-i18next']) {
   test(`peer ${name} accepts the version @medusajs/dashboard@${dashboard.version} ships`, () => {
     const shipped = dashboard.dependencies[name];
     const range = pkg.peerDependencies[name];

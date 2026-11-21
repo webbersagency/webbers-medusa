@@ -1,0 +1,261 @@
+{
+  "common": {
+    "cancel": "Annuleren",
+    "confirm": "Bevestigen",
+    "confirmTitle": "Weet je het zeker?",
+    "create": "Aanmaken",
+    "date": "Datum",
+    "delete": "Verwijderen",
+    "edit": "Bewerken",
+    "filter": "Filteren",
+    "loading": "Laden…",
+    "no": "Nee",
+    "noRecords": "Geen resultaten",
+    "noRecordsDescription": "Er zijn geen resultaten om te tonen.",
+    "optional": "Optioneel",
+    "remove": "Verwijderen",
+    "save": "Opslaan",
+    "saving": "Opslaan…",
+    "search": "Zoeken",
+    "selectAll": "Selecteer alle rijen op deze pagina",
+    "selectItem": "Selecteer {{name}}",
+    "selected_one": "{{count, number}} geselecteerd",
+    "selected_other": "{{count, number}} geselecteerd",
+    "sort": "Sorteren",
+    "sortAscending": "A–Z",
+    "sortDescending": "Z–A",
+    "status": "Status",
+    "yes": "Ja",
+    "pagination": {
+      "of": "van",
+      "results": "resultaten",
+      "pages": "pagina’s",
+      "previous": "Vorige",
+      "next": "Volgende"
+    }
+  },
+  "coupons": {
+    "title": "Unieke kortingscodes",
+    "subtitle": "Genereer eenmalig te gebruiken codes op basis van een promotie in deze campagne, bijvoorbeeld voor een Klaviyo-flow.",
+    "noTemplates": "Voeg eerst een promotie met een code aan deze campagne toe. Die dient als sjabloon voor de korting en de voorwaarden. Zet het sjabloon op concept, dan kan niemand de sjablooncode zelf gebruiken.",
+    "template": "Sjabloonpromotie",
+    "templatePlaceholder": "Kies een promotie",
+    "quantity": "Aantal codes (maximaal {{max, number}} per keer)",
+    "prefix": "Voorvoegsel (optioneel)",
+    "prefixHint": "Vul 2 tot 12 letters of cijfers in, of laat het veld leeg. Voorbeeldcode: {{example}}.",
+    "submit": "Genereer codes",
+    "draft": "concept",
+    "createdAt": "Aangemaakt",
+    "batchPrefix": "Voorvoegsel",
+    "total": "Codes",
+    "used": "Gebruikt",
+    "remaining": "Ongebruikt",
+    "download": "Download CSV",
+    "empty": "Er zijn nog geen codes gegenereerd voor deze campagne.",
+    "generated_one": "{{count, number}} code aangemaakt. De CSV is gedownload. Upload die in Klaviyo bij de coupon.",
+    "generated_other": "{{count, number}} codes aangemaakt. De CSV is gedownload. Upload die in Klaviyo bij de coupon.",
+    "error": "De codes konden niet worden aangemaakt",
+    "downloadError": "De CSV kon niet worden gedownload"
+  },
+  "customer": {
+    "anonymize": {
+      "title": "AVG",
+      "description": "Verwijdert alle persoonsgegevens van deze klant permanent (AVG-verzoek). Je kunt dit niet ongedaan maken.",
+      "confirmTitle": "Klant anonimiseren?",
+      "confirmDescription": "Dit verwijdert de naam, het adres, het telefoonnummer, het e-mailadres en de betaalgegevens van de klant permanent uit alle bestellingen, winkelwagens en abonnementen. Je kunt dit niet ongedaan maken.",
+      "action": "Anonimiseren",
+      "pending": "Anonimiseren…",
+      "success": "Klant geanonimiseerd",
+      "error": "De klant kon niet worden geanonimiseerd"
+    },
+    "email": {
+      "title": "E-mailadres van de klant",
+      "save": "E-mailadres opslaan",
+      "success": "E-mailadres bijgewerkt",
+      "error": "Het e-mailadres kon niet worden bijgewerkt"
+    },
+    "guestOrders": {
+      "title": "Gastbestellingen",
+      "description_one": "{{count, number}} niet-gekoppelde gastbestelling gevonden voor {{email}}. Voeg deze toe aan dit klantaccount.",
+      "description_other": "{{count, number}} niet-gekoppelde gastbestellingen gevonden voor {{email}}. Voeg ze toe aan dit klantaccount.",
+      "merge": "Gastbestellingen koppelen",
+      "success_one": "{{count, number}} gastbestelling gekoppeld aan deze klant",
+      "success_other": "{{count, number}} gastbestellingen gekoppeld aan deze klant",
+      "error": "De gastbestellingen konden niet worden gekoppeld"
+    }
+  },
+  "metadata": {
+    "title": "Metadata",
+    "keyCount_one": "{{count, number}} sleutel",
+    "keyCount_other": "{{count, number}} sleutels",
+    "edit": "Metadata bewerken",
+    "key": "Sleutel",
+    "value": "Waarde",
+    "rowDisabled": "Je kunt deze rij niet bewerken, omdat die samengestelde gegevens bevat.",
+    "insertAbove": "Rij erboven invoegen",
+    "insertBelow": "Rij eronder invoegen",
+    "deleteRow": "Rij verwijderen",
+    "success": "Metadata bijgewerkt",
+    "error": "De metadata konden niet worden bijgewerkt"
+  },
+  "notes": {
+    "customer": "Klantnotitie",
+    "order": "Bestelnotitie",
+    "entity": "Notitie ({{entity}})",
+    "save": "Notitie opslaan",
+    "success": "Notitie bijgewerkt"
+  },
+  "orders": {
+    "discounts": {
+      "title": "Kortingsoverzicht"
+    },
+    "notifications": {
+      "title": "Meldingen",
+      "empty": "Geen meldingen verzonden",
+      "invoice": "Factuurmail"
+    }
+  },
+  "priceList": {
+    "title": "Kortingen blokkeren",
+    "description": "Als deze optie aanstaat, kunnen kortingen de prijzen op deze prijslijst niet overschrijven."
+  },
+  "products": {
+    "product": "Product",
+    "title": "Producten",
+    "variants": "Varianten",
+    "variantCount_one": "{{count, number}} variant",
+    "variantCount_other": "{{count, number}} varianten",
+    "status": {
+      "draft": "Concept",
+      "proposed": "Voorgesteld",
+      "published": "Gepubliceerd",
+      "rejected": "Afgewezen"
+    }
+  },
+  "promotion": {
+    "title": "Gratis verzending",
+    "confirmTitle": "Gratis verzending wijzigen?",
+    "confirmDescription": "Weet je zeker dat je de status van gratis verzending wilt wijzigen?"
+  },
+  "reviews": {
+    "title": "Reviews",
+    "singular": "Review",
+    "copyId": "Review-ID kopiëren",
+    "disabled": "De reviewfunctie staat uit. Zet deze aan via Instellingen → Webbers QoL.",
+    "photo": "Foto",
+    "photos": "Foto’s",
+    "noPhotos": "Deze review bevat geen foto’s.",
+    "noPhotosFirst": "Zonder foto’s eerst",
+    "photosFirst": "Met foto’s eerst",
+    "approve": "Goedkeuren",
+    "flag": "Markeren",
+    "status": {
+      "approved": "Goedgekeurd",
+      "pending": "In afwachting",
+      "flagged": "Gemarkeerd"
+    },
+    "statusSuccess": "Reviewstatus bijgewerkt",
+    "statusError": "De reviewstatus kon niet worden bijgewerkt",
+    "createTitle": "Review aanmaken",
+    "createSuccess": "Review aangemaakt",
+    "createError": "De review kon niet worden aangemaakt",
+    "editTitle": "Review bewerken",
+    "editSuccess": "Review bijgewerkt",
+    "editError": "De review kon niet worden bijgewerkt",
+    "deleteConfirm": "Hiermee verwijder je de review definitief. Je kunt dit niet ongedaan maken.",
+    "deleteSuccess": "Review verwijderd",
+    "deleteError": "De review kon niet worden verwijderd",
+    "fields": {
+      "name": "Naam",
+      "title": "Titel",
+      "rating": "Beoordeling",
+      "city": "Plaats",
+      "cityOptional": "Plaats (optioneel)",
+      "age": "Leeftijd",
+      "ageOptional": "Leeftijd (optioneel)",
+      "gender": "Gender",
+      "genderOptional": "Gender (optioneel)",
+      "content": "Inhoud",
+      "recommend": "Ik raad het product aan",
+      "recommended": "Raadt het product aan",
+      "email": "E-mailadres"
+    },
+    "options": {
+      "notApplicable": "Niet van toepassing",
+      "male": "Man",
+      "female": "Vrouw",
+      "other": "Anders / X",
+      "undisclosed": "Zeg ik liever niet"
+    },
+    "products": {
+      "add": "Producten toevoegen",
+      "addSuccess": "Producten toegevoegd aan de review",
+      "addError": "De producten konden niet aan de review worden toegevoegd",
+      "removeConfirm": "Hiermee verwijder je {{title}} uit de review. Je kunt dit niet ongedaan maken.",
+      "removeBatchConfirm_one": "Hiermee verwijder je {{count, number}} product uit de review. Je kunt dit niet ongedaan maken.",
+      "removeBatchConfirm_other": "Hiermee verwijder je {{count, number}} producten uit de review. Je kunt dit niet ongedaan maken.",
+      "removeSuccess": "Producten uit de review verwijderd"
+    },
+    "translations": {
+      "title": "Vertalingen",
+      "action": "Vertalen",
+      "status": "Status ({{language}})",
+      "titleLabel": "Titel ({{language}})",
+      "content": "Inhoud ({{language}})",
+      "missing": "Niet vertaald",
+      "current": "Actueel",
+      "outdated": "Verouderd",
+      "success": "Review vertaald",
+      "error": "De review kon niet worden vertaald"
+    }
+  },
+  "settings": {
+    "nav": "Webbers QoL",
+    "title": "Webbers QoL-functies",
+    "description": "Schakel de functies van deze plug-in in of uit. Als je een functie uitschakelt, verdwijnt de bijbehorende widget uit het dashboard en worden de API-eindpunten geblokkeerd.",
+    "success": "Instellingen opgeslagen",
+    "error": "De instellingen konden niet worden opgeslagen",
+    "features": {
+      "notes": {
+        "label": "Notities",
+        "description": "Vrije tekstnotities op de detailpagina’s van klanten en bestellingen."
+      },
+      "anonymizeCustomer": {
+        "label": "Klant anonimiseren",
+        "description": "Persoonsgegevens wissen voor een AVG-verzoek op de klantpagina (alleen voor superbeheerders)."
+      },
+      "transferGuestOrders": {
+        "label": "Gastbestellingen overdragen",
+        "description": "Niet-gekoppelde gastbestellingen aan een klantaccount koppelen."
+      },
+      "editCustomerEmail": {
+        "label": "E-mailadres van klant bewerken",
+        "description": "Het e-mailadres van een geregistreerde klant wijzigen op de klantpagina."
+      },
+      "orderDiscountBreakdown": {
+        "label": "Bestelkortingen",
+        "description": "Overzicht van de kortingscodes die op een bestelling zijn toegepast."
+      },
+      "orderNotifications": {
+        "label": "Bestelmeldingen",
+        "description": "Lijst van transactionele e-mails die voor een bestelling zijn verzonden."
+      },
+      "alwaysFreePromotion": {
+        "label": "Promotie met altijd gratis verzending",
+        "description": "Schakelaar voor gratis verzending op de promotiepagina (alleen de widget)."
+      },
+      "disallowPriceListDiscounts": {
+        "label": "Kortingen op prijslijsten blokkeren",
+        "description": "Schakelaar op een prijslijst die voorkomt dat kortingscodes de prijzen overschrijven."
+      },
+      "uniqueCouponCodes": {
+        "label": "Unieke kortingscodes",
+        "description": "Eenmalige codes genereren op basis van een sjabloonpromotie op de campagnepagina, met een CSV-download."
+      },
+      "reviews": {
+        "label": "Productreviews",
+        "description": "Productreviews in het dashboard, de Store API en reviewstatistieken."
+      }
+    }
+  }
+}

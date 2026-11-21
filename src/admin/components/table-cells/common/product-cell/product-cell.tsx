@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { HttpTypes } from '@medusajs/types';
 import { Thumbnail } from '../thumbnail';
 
@@ -19,9 +20,10 @@ export const ProductCell = ({ product }: ProductCellProps) => {
 };
 
 export const ProductHeader = () => {
+  const { t } = useTranslation('webbersMedusa');
   return (
     <div className="flex h-full w-full items-center">
-      <span>Product</span>
+      <span>{t('products.product')}</span>
     </div>
   );
 };

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { ArrowDownMini, ArrowUpMini, ArrowUpRightOnBox, EllipsisVertical, Trash } from '@medusajs/icons';
 import {
   Badge,
@@ -40,15 +41,11 @@ type FormSchema = zod.infer<typeof MetadataSchema>;
 const METADATA_KEY_LABEL_ID = 'metadata-form-key-label';
 const METADATA_VALUE_LABEL_ID = 'metadata-form-value-label';
 
-export const MetadataSection = <TData extends object>({ data }: MetadataSectionProps<TData>) => {
-  if (!data) {
-    return null;
-  }
+export const MetadataSection = <TData extends object>({ data }: MetadataSectionProps<TData>) =>
+  data && 'metadata' in data ? <MetadataEditor data={data} /> : null;
 
-  if (!('metadata' in data)) {
-    return null;
-  }
-
+const MetadataEditor = <TData extends { metadata: unknown }>({ data }: { data: TData }) => {
+  const { t } = useTranslation('webbersMedusa');
   const [state, open, close] = useToggleState();
   const direction = useDocumentDirection();
   const queryClient = useQueryClient();
@@ -101,14 +98,14 @@ export const MetadataSection = <TData extends object>({ data }: MetadataSectionP
         },
       }),
     onSuccess: async () => {
-      toast.success('Metadata updated successfully');
+      toast.success(t('metadata.success'));
       await queryClient.invalidateQueries({
         // @ts-ignore
         queryKey: ['review', data?.id],
       });
     },
     onError: e => {
-      toast.error(e.message);
+      toast.error(t('metadata.error'), { description: e.message });
     },
   });
 
@@ -122,9 +119,9 @@ export const MetadataSection = <TData extends object>({ data }: MetadataSectionP
     <>
       <Container className="flex items-center justify-between">
         <div className="flex items-center gap-x-3">
-          <Heading level="h2">Metadata</Heading>
+          <Heading level="h2">{t('metadata.title')}</Heading>
           <Badge size="2xsmall" rounded="full">
-            {numberOfKeys} keys
+            {t('metadata.keyCount', { count: numberOfKeys })}
           </Badge>
         </div>
         <IconButton
@@ -132,6 +129,7 @@ export const MetadataSection = <TData extends object>({ data }: MetadataSectionP
           variant="transparent"
           className="text-ui-fg-muted hover:text-ui-fg-subtle"
           asChild
+          aria-label={t('metadata.edit')}
           onClick={open}
         >
           <ArrowUpRightOnBox />
@@ -141,16 +139,16 @@ export const MetadataSection = <TData extends object>({ data }: MetadataSectionP
         <Drawer open={state} onOpenChange={close}>
           <Drawer.Content>
             <Drawer.Header>
-              <h1 className="font-sans font-medium h1-core">Edit Metadata</h1>
+              <h1 className="font-sans font-medium h1-core">{t('metadata.edit')}</h1>
             </Drawer.Header>
             <Drawer.Body>
               <div className="bg-ui-bg-base shadow-elevation-card-rest grid grid-cols-1 divide-y rounded-lg">
                 <div className="bg-ui-bg-subtle grid grid-cols-2 divide-x rounded-t-lg">
                   <div className="txt-compact-small-plus text-ui-fg-subtle px-2 py-1.5">
-                    <label id={METADATA_KEY_LABEL_ID}>Key</label>
+                    <label id={METADATA_KEY_LABEL_ID}>{t('metadata.key')}</label>
                   </div>
                   <div className="txt-compact-small-plus text-ui-fg-subtle px-2 py-1.5">
-                    <label id={METADATA_VALUE_LABEL_ID}>Value</label>
+                    <label id={METADATA_VALUE_LABEL_ID}>{t('metadata.value')}</label>
                   </div>
                 </div>
                 {fields.map((field, index) => {
@@ -168,7 +166,7 @@ export const MetadataSection = <TData extends object>({ data }: MetadataSectionP
                   return (
                     <ConditionalTooltip
                       showTooltip={isDisabled}
-                      content={'This row is disabled because it contains non-primitive data.'}
+                      content={t('metadata.rowDisabled')}
                       key={field.id}
                     >
                       <div className="group/table relative">
@@ -188,7 +186,7 @@ export const MetadataSection = <TData extends object>({ data }: MetadataSectionP
                                       aria-labelledby={METADATA_KEY_LABEL_ID}
                                       {...field}
                                       disabled={isDisabled}
-                                      placeholder="Key"
+                                      placeholder={t('metadata.key')}
                                     />
                                   </Form.Control>
                                 </Form.Item>
@@ -207,7 +205,7 @@ export const MetadataSection = <TData extends object>({ data }: MetadataSectionP
                                       {...field}
                                       value={isDisabled ? placeholder : value}
                                       disabled={isDisabled}
-                                      placeholder="Value"
+                                      placeholder={t('metadata.value')}
                                     />
                                   </Form.Control>
                                 </Form.Item>
@@ -233,16 +231,16 @@ export const MetadataSection = <TData extends object>({ data }: MetadataSectionP
                           <DropdownMenu.Content>
                             <DropdownMenu.Item className="gap-x-2" onClick={() => insertRow(index, 'above')}>
                               <ArrowUpMini className="text-ui-fg-subtle" />
-                              Insert row above
+                              {t('metadata.insertAbove')}
                             </DropdownMenu.Item>
                             <DropdownMenu.Item className="gap-x-2" onClick={() => insertRow(index, 'below')}>
                               <ArrowDownMini className="text-ui-fg-subtle" />
-                              Insert row below
+                              {t('metadata.insertBelow')}
                             </DropdownMenu.Item>
                             <DropdownMenu.Separator />
                             <DropdownMenu.Item className="gap-x-2" onClick={() => deleteRow(index)}>
                               <Trash className="text-ui-fg-subtle" />
-                              Delete row
+                              {t('metadata.deleteRow')}
                             </DropdownMenu.Item>
                           </DropdownMenu.Content>
                         </DropdownMenu>
@@ -254,10 +252,10 @@ export const MetadataSection = <TData extends object>({ data }: MetadataSectionP
             </Drawer.Body>
             <Drawer.Footer>
               <Button variant="secondary" type="submit" onClick={close} size={'small'}>
-                Cancel
+                {t('common.cancel')}
               </Button>
               <Button variant="primary" type="submit" onClick={methods.handleSubmit(onSubmit)} size={'small'}>
-                Save
+                {t('common.save')}
               </Button>
             </Drawer.Footer>
           </Drawer.Content>

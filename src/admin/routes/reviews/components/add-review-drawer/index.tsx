@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { AddReviewDrawerProps } from './types.ts';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Button, Drawer, toast } from '@medusajs/ui';
@@ -6,6 +7,7 @@ import { sdk } from '../../../../sdk.ts';
 import { ReviewFormFields, ReviewFormValues, ReviewPayload, toReviewPayload } from '../review-form';
 
 const AddReviewDrawer = ({ state, onClose }: AddReviewDrawerProps) => {
+  const { t } = useTranslation('webbersMedusa');
   const queryClient = useQueryClient();
   const methods = useForm<ReviewFormValues>({});
 
@@ -18,13 +20,13 @@ const AddReviewDrawer = ({ state, onClose }: AddReviewDrawerProps) => {
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['reviews'] });
-      toast.success('Review created successfully');
+      toast.success(t('reviews.createSuccess'));
       methods.reset();
       onClose();
     },
     onError: err => {
       console.log(err);
-      toast.error('Failed to create review');
+      toast.error(t('reviews.createError'));
     },
   });
 
@@ -37,7 +39,7 @@ const AddReviewDrawer = ({ state, onClose }: AddReviewDrawerProps) => {
       <Drawer open={state} onOpenChange={onClose}>
         <Drawer.Content>
           <Drawer.Header>
-            <h1 className="font-sans font-medium h1-core">Create Review</h1>
+            <h1 className="font-sans font-medium h1-core">{t('reviews.createTitle')}</h1>
           </Drawer.Header>
 
           <Drawer.Body className="overflow-y-auto">
@@ -45,10 +47,10 @@ const AddReviewDrawer = ({ state, onClose }: AddReviewDrawerProps) => {
           </Drawer.Body>
           <Drawer.Footer>
             <Button variant="secondary" type="button" onClick={onClose} size={'small'}>
-              Cancel
+              {t('common.cancel')}
             </Button>
             <Button variant="primary" type="submit" onClick={methods.handleSubmit(onSubmit)} size={'small'}>
-              Save
+              {t('common.save')}
             </Button>
           </Drawer.Footer>
         </Drawer.Content>

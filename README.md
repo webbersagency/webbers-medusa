@@ -85,6 +85,13 @@ After installing, run the migrations so the plugin's tables exist:
 npx medusa db:migrate
 ```
 
+### Admin languages
+
+The plugin’s Admin pages and widgets follow the language selected in your Medusa Admin profile.
+English, Polish, and Dutch are included. Plugin text falls back to English for other Admin languages.
+Medusa loads these translations when the registered plugin is bundled into the host Admin. The Admin
+language does not affect the review content languages configured under `options.translations`.
+
 ### The bundled `custom_query` module
 
 The plugin bundles a `custom_query` module exposing `PSQLQuery` / `PSQLTransaction` — the anonymize, transfer-guest-orders, edit-email and order-notifications routes resolve it from the container by key (`custom_query`).

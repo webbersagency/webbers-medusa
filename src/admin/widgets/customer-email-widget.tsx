@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { defineWidgetConfig } from '@medusajs/admin-sdk';
 import { Container, Heading, Button, Input, toast } from '@medusajs/ui';
 import { DetailWidgetProps, AdminCustomer } from '@medusajs/framework/types';
@@ -27,6 +28,7 @@ const CustomerEmailWidget = (props: DetailWidgetProps<AdminCustomer>) => {
 };
 
 const CustomerEmailForm = ({ data }: DetailWidgetProps<AdminCustomer>) => {
+  const { t } = useTranslation('webbersMedusa');
   const [email, setEmail] = useState(data.email);
   const [loading, setLoading] = useState(false);
   const queryClient = useQueryClient();
@@ -42,9 +44,9 @@ const CustomerEmailForm = ({ data }: DetailWidgetProps<AdminCustomer>) => {
     try {
       await updateCustomerEmail(data.id, email);
       await queryClient.invalidateQueries({ queryKey: [] });
-      toast.success('Email updated');
-    } catch (e: any) {
-      toast.error(e.message || 'Error updating email');
+      toast.success(t('customer.email.success'));
+    } catch {
+      toast.error(t('customer.email.error'));
     } finally {
       setLoading(false);
     }
@@ -53,13 +55,13 @@ const CustomerEmailForm = ({ data }: DetailWidgetProps<AdminCustomer>) => {
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
-        <Heading level="h2">Customer Email</Heading>
+        <Heading level="h2">{t('customer.email.title')}</Heading>
       </div>
       <div className="flex flex-col gap-y-3 px-6 py-4">
         <Input type="email" value={email ?? ''} onChange={e => setEmail(e.target.value)} />
         <div className="flex items-center gap-x-3">
           <Button size="small" variant="primary" disabled={loading || email === data.email} onClick={onSave}>
-            {loading ? 'Saving...' : 'Save email'}
+            {loading ? t('common.saving') : t('customer.email.save')}
           </Button>
         </div>
       </div>
